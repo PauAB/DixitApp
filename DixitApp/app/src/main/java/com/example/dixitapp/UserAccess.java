@@ -1,5 +1,7 @@
 package com.example.dixitapp;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -53,6 +55,7 @@ public class UserAccess {
                         else
                         {
                             callback.onCallback(Constants.STATUS_KO);
+                            Log.w("Firebase", "Something went wrong", task.getException());
                         }
                     }
                 });

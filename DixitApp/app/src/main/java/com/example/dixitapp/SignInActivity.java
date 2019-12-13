@@ -10,7 +10,6 @@ import android.widget.ImageView;
 public class SignInActivity extends AppCompatActivity {
 
     ImageView imageViewGoogleSign;
-    ImageView imageViewTwitterSign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +17,6 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         imageViewGoogleSign = findViewById(R.id.imageViewGoogleSign);
-        imageViewTwitterSign = findViewById(R.id.imageViewTwitterSign);
 
         imageViewGoogleSign.setOnClickListener(new View.OnClickListener() {
             @Override

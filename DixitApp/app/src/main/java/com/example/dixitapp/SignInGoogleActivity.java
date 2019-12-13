@@ -3,9 +3,11 @@ package com.example.dixitapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,23 +28,59 @@ public class SignInGoogleActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
 
+    static public boolean signedOut = false;
+
+    Context context;
+    private String toastText;
+    private int toastDuration = Toast.LENGTH_SHORT;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_google);
+
+        context = getApplicationContext();
+
         mAuth = FirebaseAuth.getInstance();
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        signIn();
+
+        if (!signedOut) signIn();
+        else signOut();
     }
 
-
     private void signIn() {
+        signedOut = false;
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 1);
+
+        toastText = "Signing In...";
+        Toast toast = Toast.makeText(context, toastText, toastDuration);
+        toast.show();
+    }
+
+    private void signOut()
+    {
+        FirebaseAuth.getInstance().signOut();
+
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        toastText = "Logged Out.";
+                        Toast toast = Toast.makeText(context, toastText, toastDuration);
+                        toast.show();
+
+                        Intent intent = new Intent(SignInGoogleActivity.this, MainActivity.class);
+                        startActivity(intent);
+
+                        signedOut = false;
+                    }
+                });
     }
 
     @Override
