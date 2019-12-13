@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "96220484609",
+    "firebase_url": "https://dixitapp-cda54.firebaseio.com",
+    "project_id": "dixitapp-cda54",
+    "storage_bucket": "dixitapp-cda54.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96220484609:android:c94f87c598702bbd1e1c00",
+        "android_client_info": {
+          "package_name": "com.example.dixitapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96220484609-pon19vu2bsfqpr0qleh80pravaup7uv5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dixitapp",
+            "certificate_hash": "921c51c62b1f5128d87ade81516de1ece07f1a9b"
+          }
+        },
+        {
+          "client_id": "96220484609-fd6fhhm2um6b8i9scfohvsf38q5h5it9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD13weGoaswPKSNRcfFBjKFhEUWV8EBkWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96220484609-fd6fhhm2um6b8i9scfohvsf38q5h5it9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
