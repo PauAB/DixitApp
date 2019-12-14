@@ -1,7 +1,5 @@
 package com.example.dixitapp;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,10 +13,10 @@ import java.util.Map;
 
 public class UserAccess {
 
-    public static void createNewUser(String username, String email, String name, final CreateNewUserCallback callback)
+    public static void createNewUser(String username, String email, String name, String password, final CreateNewUserCallback callback)
     {
         FirebaseFirestore.getInstance().collection("users").document(username)
-                .set(new User(email, name).toMap())
+                .set(new User(email, name, password).toMap())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -43,20 +41,10 @@ public class UserAccess {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful())
                         {
-                            if (task.getResult().getDocuments().size() == 0)
-                            {
-                                callback.onCallback(Constants.STATUS_USER_NOT_EXIST);
-                            }
-                            else
-                            {
-                                callback.onCallback(Constants.STATUS_USER_EXIST);
-                            }
+                            if (task.getResult().getDocuments().size() == 0) callback.onCallback(Constants.STATUS_USER_NOT_EXIST);
+                            else callback.onCallback(Constants.STATUS_USER_EXIST);
                         }
-                        else
-                        {
-                            callback.onCallback(Constants.STATUS_KO);
-                            Log.w("Firebase", "Something went wrong", task.getException());
-                        }
+                        else callback.onCallback(Constants.STATUS_KO);
                     }
                 });
     }
@@ -68,18 +56,10 @@ public class UserAccess {
             public void onCallback(int status, String username, Map<String, Object> userData) {
                 if (status == Constants.STATUS_OK)
                 {
-                    if (username == null)
-                    {
-                        callback.onCallback(Constants.STATUS_USER_NOT_EXIST);
-                    } else
-                    {
-                        callback.onCallback(Constants.STATUS_USER_EXIST);
-                    }
+                    if (username == null) callback.onCallback(Constants.STATUS_USER_NOT_EXIST);
+                    else callback.onCallback(Constants.STATUS_USER_EXIST);
                 }
-                else
-                {
-                    callback.onCallback(Constants.STATUS_KO);
-                }
+                else callback.onCallback(Constants.STATUS_KO);
             }
         });
     }
@@ -102,15 +82,9 @@ public class UserAccess {
 
                                 callback.onCallback(Constants.STATUS_OK, username, data);
                             }
-                            else
-                            {
-                                callback.onCallback(Constants.STATUS_OK, null, null);
-                            }
+                            else callback.onCallback(Constants.STATUS_OK, null, null);
                         }
-                        else
-                        {
-                            callback.onCallback(Constants.STATUS_KO, null,null);
-                        }
+                        else callback.onCallback(Constants.STATUS_KO, null,null);
                     }
                 });
     }
@@ -133,17 +107,33 @@ public class UserAccess {
 
                                 callback.onCallback(Constants.STATUS_OK, username, data);
                             }
-                            else
-                            {
-                                callback.onCallback(Constants.STATUS_OK, null, null);
-                            }
+                            else callback.onCallback(Constants.STATUS_OK, null, null);
                         }
-                        else
-                        {
-                            callback.onCallback(Constants.STATUS_KO, null, null);
-                        }
+                        else callback.onCallback(Constants.STATUS_KO, null, null);
                     }
                 });
+    }
+
+    public static void deleteUser(String email, final CreateNewUserCallback callback)
+    {
+        getUserByEmail(email, new UserCallback() {
+            @Override
+            public void onCallback(int status, String username, Map<String, Object> userData) {
+                if (status == Constants.STATUS_OK)
+                {
+                    if (userData != null)
+                    {
+                        userData.put("name", null);
+                        userData.put("email", null);
+                        userData.put("password", null);
+
+                        callback.onCallback(Constants.STATUS_USER_NOT_EXIST);
+                    }
+                    else callback.onCallback(Constants.STATUS_USER_NOT_EXIST);
+                }
+                else callback.onCallback(Constants.STATUS_KO);
+            }
+        });
     }
 
     public interface CreateNewUserCallback

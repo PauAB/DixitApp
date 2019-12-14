@@ -11,10 +11,12 @@ public class User {
 
     public String name;
     public String email;
+    public String password;
 
-    public User(String name, String email) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
+        this.password = password;
     }
 
     public String getName() {
@@ -33,12 +35,17 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
+
     @Exclude
     public Map<String, Object> toMap()
     {
         HashMap<String, Object> result = new HashMap<>();
         result.put("name", this.name);
         result.put("email", this.email);
+        result.put("password", this.password);
 
         return result;
     }

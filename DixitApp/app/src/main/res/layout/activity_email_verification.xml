@@ -4,35 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInActivity">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVerStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.01" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVerEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.99" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineContentStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineContentEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9" />
+    tools:context=".EmailVerificationActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorStart"
@@ -48,17 +20,102 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.99" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.99" />
+
     <ImageView
-        android:id="@+id/imageViewBackgroundTitle"
+        android:id="@+id/imageViewBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guidelineVerEnd"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
         app:layout_constraintTop_toTopOf="@+id/guidelineVerStart"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@color/blueBackground" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="HOBBIES"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/blueFonts"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineVerStart" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineContentStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineContentEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <TextView
+        android:id="@+id/textViewEmailVerification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Email Verification"
+        android:textColor="@color/blueFonts"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <TextView
+        android:id="@+id/textViewMsg1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="We have sent an email to this address:"
+        android:textColor="@color/blueFonts"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmailVerification" />
+
+    <TextView
+        android:id="@+id/textViewEmailConf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Email"
+        android:textColor="@color/blueLinks"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMsg1" />
+
+    <TextView
+        android:id="@+id/textViewMsg2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Please follow the instructions to verify your email"
+        android:textColor="@color/blueFonts"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmailConf" />
 
     <ImageView
         android:id="@+id/imageViewBaseball"
@@ -66,7 +123,7 @@
         android:layout_height="34dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMsg2"
         app:srcCompat="@drawable/ic_iconfinder_baseball_1271428" />
 
     <ImageView
@@ -138,131 +195,37 @@
         app:layout_constraintTop_toTopOf="@+id/imageViewCricketball"
         app:srcCompat="@drawable/ic_iconfinder_volleyball_1271423" />
 
-    <ImageView
-        android:id="@+id/imageViewGoogleSignIn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewSignInWith"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
-        app:layout_constraintTop_toTopOf="@+id/textViewSignInWith"
-        app:srcCompat="@drawable/googleg_standard_color_18" />
-
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:textColor="@color/blueLinks"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
-        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewCricketball" />
-
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/blueLinks"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
-        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewGoogleSignIn" />
-
     <TextView
-        android:id="@+id/textViewTitle"
+        android:id="@+id/textViewMsg3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="HOBBIES"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/blueFonts"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
-        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
-        app:layout_constraintTop_toTopOf="@+id/guidelineVerStart" />
-
-    <TextView
-        android:id="@+id/textViewSignInWith"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
-        android:text="Sign In With:"
+        android:layout_marginTop="24dp"
+        android:text="Did not receive the email?"
         android:textColor="@color/blueFonts"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBaseball" />
 
     <TextView
-        android:id="@+id/textViewLogIn"
+        android:id="@+id/textViewSendAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send again"
+        android:textColor="@color/blueLinks"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewMsg3"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewMsg3" />
+
+    <TextView
+        android:id="@+id/textViewConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="Log In"
+        android:text="Confirm"
         android:textColor="@color/blueLinks"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
-
-    <TextView
-        android:id="@+id/textViewNoAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="No account?"
-        android:textColor="@color/blueFonts"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLogIn" />
-
-    <TextView
-        android:id="@+id/textViewEmailBackground"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:alpha="0.5"
-        android:text="Email"
-        android:textColor="@color/blueLinks"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextEmail"
-        app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextEmail"
-        app:layout_constraintTop_toTopOf="@+id/editTextEmail" />
-
-    <TextView
-        android:id="@+id/textViewPasswordBackground"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:alpha="0.5"
-        android:text="Password"
-        android:textColor="@color/blueLinks"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextPassword"
-        app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextPassword"
-        app:layout_constraintTop_toTopOf="@+id/editTextPassword" />
-
-    <TextView
-        android:id="@+id/textViewCreateAcc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Create one"
-        android:textColor="@color/blueLinks"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewNoAccount"
-        app:layout_constraintStart_toEndOf="@+id/textViewNoAccount"
-        app:layout_constraintTop_toTopOf="@+id/textViewNoAccount" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSendAgain" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

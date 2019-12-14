@@ -31,13 +31,17 @@ public class SignInGoogleActivity extends AppCompatActivity {
     static public boolean signedOut = false;
 
     Context context;
-    private String toastText;
-    private int toastDuration = Toast.LENGTH_SHORT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_google);
+
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
 
         context = getApplicationContext();
 
@@ -48,18 +52,18 @@ public class SignInGoogleActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+
         if (!signedOut) signIn();
         else signOut();
     }
 
     private void signIn() {
         signedOut = false;
+        SignInActivity.loggedInWithEmail = false;
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 1);
 
-        toastText = "Signing In...";
-        Toast toast = Toast.makeText(context, toastText, toastDuration);
-        toast.show();
+        Toast.makeText(context, "Signing In...", Toast.LENGTH_SHORT).show();
     }
 
     private void signOut()
@@ -71,9 +75,7 @@ public class SignInGoogleActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        toastText = "Logged Out.";
-                        Toast toast = Toast.makeText(context, toastText, toastDuration);
-                        toast.show();
+                        Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(SignInGoogleActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -109,6 +111,15 @@ public class SignInGoogleActivity extends AppCompatActivity {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("Firebase", "signInWithCredential:success");
                     FirebaseUser user = mAuth.getCurrentUser();
+                    String username = user.getEmail().split("@")[0];
+                    UserAccess.createNewUser(username, user.getEmail(), user.getDisplayName(), null, new UserAccess.CreateNewUserCallback() {
+                        @Override
+                        public void onCallback(int status) {
+                            if (status == UserAccess.Constants.STATUS_OK) Toast.makeText(context, "User created.", Toast.LENGTH_SHORT).show();
+                            else Toast.makeText(context, "Error. User create failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                     Intent intent = new Intent(SignInGoogleActivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {

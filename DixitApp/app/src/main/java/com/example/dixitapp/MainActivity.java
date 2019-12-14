@@ -17,6 +17,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
+
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -34,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            Intent intent = new Intent(MainActivity.this, SetInitProfileActivity.class);
+            Intent intent = new Intent(MainActivity.this, AppActivity.class);
             startActivity(intent);
         }
     }

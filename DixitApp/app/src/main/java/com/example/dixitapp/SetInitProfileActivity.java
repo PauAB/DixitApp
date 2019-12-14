@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,9 +25,9 @@ public class SetInitProfileActivity extends AppCompatActivity {
 
     private EditText editTextName;
     private EditText editTextEmail;
+    private EditText editTextPassword;
     private ImageView imageViewUserImage;
     private ImageView imageViewNext;
-    private TextView textViewLogOut;
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -34,15 +36,20 @@ public class SetInitProfileActivity extends AppCompatActivity {
     private String image;
     private String name;
     private String email;
+    private String password = "";
 
     Context context;
-    private String toastText = "";
-    private int toastDuration = Toast.LENGTH_SHORT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_init_profile);
+
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
 
         context = getApplicationContext();
 
@@ -57,16 +64,13 @@ public class SetInitProfileActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        toastText = "Signed In.";
-        Toast toast = Toast.makeText(context, toastText, toastDuration);
-        toast.show();
         // -----------------------------------------------------------------------------------------------
 
         editTextName = findViewById(R.id.editTextName);
         editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
         imageViewUserImage = findViewById(R.id.imageViewUserImage);
         imageViewNext = findViewById(R.id.imageViewNext);
-        textViewLogOut = findViewById(R.id.textViewLogOut);
 
         name = user.getDisplayName();
         email = user.getEmail();
@@ -84,99 +88,62 @@ public class SetInitProfileActivity extends AppCompatActivity {
         imageViewNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toastText = "Checking if user exists...";
-                Toast toast = Toast.makeText(context, toastText, toastDuration);
-                toast.show();
+                password = editTextPassword.getText().toString();
 
-                name = editTextName.getText().toString();
-                email = editTextEmail.getText().toString();
+                if (password.length() < 8) Toast.makeText(context, "Invalid password. Write at least 8 characters.", Toast.LENGTH_SHORT).show();
+                else if (password.length() >= 8)
+                {
+                    Toast.makeText(context, "Checking if user exists...", Toast.LENGTH_SHORT).show();
 
-                UserAccess.checkUserExist(name, new UserAccess.ExistCallback() {
-                    @Override
-                    public void onCallback(int status) {
-                        switch (status)
-                        {
-                            case UserAccess.Constants.STATUS_USER_EXIST:
-                                Log.w("Next", "Invalid user, try another name");
-                                toastText = "Invalid. Username already exists.";
-                                Toast toast = Toast.makeText(context, toastText, toastDuration);
-                                toast.show();
-                                break;
+                    name = editTextName.getText().toString();
+                    email = editTextEmail.getText().toString();
 
-                            case UserAccess.Constants.STATUS_USER_NOT_EXIST:
-                                Log.w("Next", "Valid user, checking email");
+                    UserAccess.checkUserExist(name, new UserAccess.ExistCallback() {
+                        @Override
+                        public void onCallback(int status) {
+                            switch (status) {
+                                case UserAccess.Constants.STATUS_USER_EXIST:
+                                    Toast.makeText(context, "Invalid. Username already exists.", Toast.LENGTH_SHORT).show();
+                                    break;
 
-                                UserAccess.checkEmailExist(email, new UserAccess.ExistCallback() {
-                                    @Override
-                                    public void onCallback(int status) {
-                                        switch (status)
-                                        {
-                                            case UserAccess.Constants.STATUS_USER_EXIST:
-                                                Log.w("Next", "Invalid. Email already in use.");
-                                                toastText = "Invalid. Email already in use.";
-                                                Toast toast = Toast.makeText(context, toastText, toastDuration);
-                                                toast.show();
-                                                break;
+                                case UserAccess.Constants.STATUS_USER_NOT_EXIST:
+                                    UserAccess.checkEmailExist(email, new UserAccess.ExistCallback() {
+                                        @Override
+                                        public void onCallback(int status) {
+                                            switch (status) {
+                                                case UserAccess.Constants.STATUS_USER_EXIST:
+                                                    Toast.makeText(context, "Invalid. Email already in use.", Toast.LENGTH_SHORT).show();
+                                                    break;
 
-                                            case UserAccess.Constants.STATUS_USER_NOT_EXIST:
-                                                Log.w("Next", "Valid email, creating user");
+                                                case UserAccess.Constants.STATUS_USER_NOT_EXIST:
+                                                    UserAccess.createNewUser(username, name, email, password, new UserAccess.CreateNewUserCallback() {
+                                                        @Override
+                                                        public void onCallback(int status) {
+                                                            if (status == UserAccess.Constants.STATUS_OK) {
+                                                                Toast.makeText(context, "User created.", Toast.LENGTH_SHORT).show();
 
-                                                UserAccess.createNewUser(username, name, email, new UserAccess.CreateNewUserCallback() {
-                                                    @Override
-                                                    public void onCallback(int status) {
-                                                        if (status == UserAccess.Constants.STATUS_OK)
-                                                        {
-                                                            Log.w("Next", "User created");
-                                                            toastText = "User created.";
-                                                            Toast toast = Toast.makeText(context, toastText, toastDuration);
-                                                            toast.show();
-
-                                                            Intent intent = new Intent(SetInitProfileActivity.this, AppActivity.class);
-                                                            startActivity(intent);
+                                                                Intent intent = new Intent(SetInitProfileActivity.this, AppActivity.class);
+                                                                startActivity(intent);
+                                                            } else if (status == UserAccess.Constants.STATUS_KO) {
+                                                                Toast.makeText(context, "Error. User creation failed.", Toast.LENGTH_SHORT).show();
+                                                            }
                                                         }
-                                                        else if (status == UserAccess.Constants.STATUS_KO)
-                                                        {
-                                                            Log.w("Next", "User NOT created");
-                                                            toastText = "Error. Can't create user.";
-                                                            Toast toast = Toast.makeText(context, toastText, toastDuration);
-                                                            toast.show();
-                                                        }
-                                                    }
-                                                });
-                                                break;
-                                            case UserAccess.Constants.STATUS_KO:
-                                                Log.w("Next", "Something went wrong while checking email");
-                                                toastText = "Error. Can't check email.";
-                                                Toast toast2 = Toast.makeText(context, toastText, toastDuration);
-                                                toast2.show();
-                                                break;
+                                                    });
+                                                    break;
+                                                case UserAccess.Constants.STATUS_KO:
+                                                    Toast.makeText(context, "Error. Email authentication failed.", Toast.LENGTH_SHORT).show();
+                                                    break;
+                                            }
                                         }
-                                    }
-                                });
-                                break;
-                            case UserAccess.Constants.STATUS_KO:
-                                Log.w("Next", "Something went wrong while checking user");
-                                toastText = "Error. Can't check username.";
-                                Toast toast2 = Toast.makeText(context, toastText, toastDuration);
-                                toast2.show();
-                                break;
+                                    });
+                                    break;
+                                case UserAccess.Constants.STATUS_KO:
+                                    Toast.makeText(context, "Error. User authentication failed", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
                         }
-                    }
-                });
-            }
-        });
-
-        textViewLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SignInGoogleActivity.signedOut = true;
-
-                toastText = "Logging Out...";
-                Toast toast = Toast.makeText(context, toastText, toastDuration);
-                toast.show();
-
-                Intent intent = new Intent(SetInitProfileActivity.this, SignInGoogleActivity.class);
-                startActivity(intent);
+                    });
+                }
             }
         });
     }
