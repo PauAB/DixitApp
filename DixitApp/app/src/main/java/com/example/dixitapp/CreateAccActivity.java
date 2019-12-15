@@ -169,6 +169,8 @@ public class CreateAccActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (name != null && email != null && password != null && passwordConfirm != null)
                 {
+                    Toast.makeText(context, "Creating user...", Toast.LENGTH_SHORT).show();
+
                     if (password.length() < 8 || passwordConfirm.length() < 8) Toast.makeText(context, "Invalid password. Write at least 8 characters.", Toast.LENGTH_SHORT).show();
                     else if (password.length() >= 8 && passwordConfirm.length() >= 8)
                     {
@@ -192,8 +194,6 @@ public class CreateAccActivity extends AppCompatActivity {
                                                        break;
 
                                                         case UserAccess.Constants.STATUS_USER_NOT_EXIST:
-                                                            Toast.makeText(context, "Creating user...", Toast.LENGTH_SHORT).show();
-
                                                             mAuth.createUserWithEmailAndPassword(email, password)
                                                                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                                                         @Override

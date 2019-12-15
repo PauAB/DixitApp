@@ -20,6 +20,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
+    FirebaseAuth.AuthStateListener authStateListener;
 
     private Guideline guidelineVerStart;
     private Guideline guidelineVerEnd;
@@ -36,6 +37,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
     private TextView textViewConfirm;
 
     private String email;
+    private boolean userEmailVerified = false;
 
     Context context;
 
@@ -82,19 +84,32 @@ public class EmailVerificationActivity extends AppCompatActivity {
             }
         });
 
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null)
+                {
+                    if (firebaseAuth.getCurrentUser().isEmailVerified())
+                    {
+                        userEmailVerified = true;
+                        Toast.makeText(context, "Email verified", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        };
+
         if(currentUser != null)
         {
             textViewConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (currentUser.isEmailVerified())
+                    if (userEmailVerified)
                     {
                         Intent intent = new Intent(EmailVerificationActivity.this, AppActivity.class);
                         startActivity(intent);
                     }
                 }
             });
-
         }
     }
 
@@ -106,10 +121,8 @@ public class EmailVerificationActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful())
-                                Toast.makeText(context, "Email sent.", Toast.LENGTH_SHORT).show();
-                            else
-                                Toast.makeText(context, "Error. Email could not be sent.", Toast.LENGTH_SHORT).show();
+                            if (task.isSuccessful()) Toast.makeText(context, "Email sent.", Toast.LENGTH_SHORT).show();
+                            else Toast.makeText(context, "Error. Email could not be sent.", Toast.LENGTH_SHORT).show();
                         }
                     });
         }

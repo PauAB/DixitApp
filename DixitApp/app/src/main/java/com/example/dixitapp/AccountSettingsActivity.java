@@ -52,7 +52,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private ImageView imageViewBack;
 
-    // Anim views -----------------------
+    // ANIM VIEWS -----------------------
     private ImageView imageViewDeleteBorder;
     private ImageView imageViewDeleteBackground;
     private TextView textViewMsg2;
@@ -104,7 +104,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         imageViewBack = findViewById(R.id.imageViewBack);
 
-        // Anim views ------------------------------------------------
+        // ANIM VIEWS ------------------------------------------------
         imageViewDeleteBorder = findViewById(R.id.imageViewDeleteBorder);
         imageViewDeleteBackground = findViewById(R.id.imageViewDeleteBackground);
         textViewMsg2 = findViewById(R.id.textViewMsg2);
@@ -115,7 +115,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         imageViewDeleteBack = findViewById(R.id.imageViewDeleteBack);
         // -----------------------------------------------------------
 
-        // Anim defaults -----------------------------------------------------
+        // ANIM DEFAULTS -----------------------------------------------------
         imageViewDeleteBorder.setVisibility(View.INVISIBLE);
         imageViewDeleteBorder.setScaleX(0.f);
         imageViewDeleteBorder.setScaleY(0.f);
@@ -279,6 +279,28 @@ public class AccountSettingsActivity extends AppCompatActivity {
         textViewDeleteAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // SET TO DEFAULT AGAIN TO PREVENT VISUAL BUGS ----------
+                imageViewDeleteBorder.setVisibility(View.INVISIBLE);
+                imageViewDeleteBorder.setScaleX(0.f);
+                imageViewDeleteBorder.setScaleY(0.f);
+                imageViewDeleteBackground.setVisibility(View.INVISIBLE);
+                imageViewDeleteBackground.setScaleX(0.f);
+                imageViewDeleteBackground.setScaleY(0.f);
+                textViewMsg2.setVisibility(View.INVISIBLE);
+                textViewMsg2.setAlpha(0.f);
+                textViewMsg3.setVisibility(View.INVISIBLE);
+                textViewMsg3.setAlpha(0.f);
+                textViewPassBackground.setVisibility(View.INVISIBLE);
+                textViewPassBackground.setAlpha(0.f);
+                textViewDeleteConfirm.setVisibility(View.INVISIBLE);
+                textViewDeleteConfirm.setAlpha(0.f);
+                editTextDeletePass.setVisibility(View.INVISIBLE);
+                editTextDeletePass.setAlpha(0.f);
+                imageViewDeleteBack.setVisibility(View.INVISIBLE);
+                imageViewDeleteBack.setScaleX(0.f);
+                imageViewDeleteBack.setScaleY(0.f);
+                imageViewDeleteBack.setAlpha(0.f);
+                // ------------------------------------------------------
                 DisplayDeleteBackgroundAnim();
             }
         });
@@ -504,6 +526,44 @@ public class AccountSettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void UndisplayDeleteTextAnim()
+    {
+        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 1.f);
+
+        valueAnimator.setDuration(300);
+        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        valueAnimator.start();
+
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                imageViewDeleteBack.setScaleX(1.f - (Float) valueAnimator.getAnimatedValue());
+                imageViewDeleteBack.setScaleY(1.f - (Float) valueAnimator.getAnimatedValue());
+                imageViewDeleteBack.setAlpha(1.f - (Float) valueAnimator.getAnimatedValue());
+                textViewMsg2.setAlpha(1.f - (Float) valueAnimator.getAnimatedValue());;
+                textViewMsg3.setAlpha(1.f - (Float) valueAnimator.getAnimatedValue());
+                textViewPassBackground.setAlpha(1.f - (Float) valueAnimator.getAnimatedValue());
+                textViewDeleteConfirm.setAlpha(1.f - (Float) valueAnimator.getAnimatedValue());
+                editTextDeletePass.setAlpha(1.f - (Float) valueAnimator.getAnimatedValue());
+            }
+        });
+
+        valueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                imageViewDeleteBack.setVisibility(View.INVISIBLE);
+                textViewMsg2.setVisibility(View.INVISIBLE);
+                textViewMsg3.setVisibility(View.INVISIBLE);
+                textViewPassBackground.setVisibility(View.INVISIBLE);
+                textViewDeleteConfirm.setVisibility(View.INVISIBLE);
+                editTextDeletePass.setVisibility(View.INVISIBLE);
+                UndisplayDeleteBackgroundAnim();
+            }
+        });
+    }
+
     private void SetEditTextListener()
     {
         editTextDeletePass.addTextChangedListener(new TextWatcher() {
@@ -530,7 +590,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         imageViewDeleteBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UndisplayDeleteBackgroundAnim();
+                UndisplayDeleteTextAnim();
             }
         });
     }

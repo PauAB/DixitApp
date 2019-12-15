@@ -115,8 +115,6 @@ public class SignInGoogleActivity extends AppCompatActivity {
                     UserAccess.createNewUser(username, user.getEmail(), user.getDisplayName(), null, new UserAccess.CreateNewUserCallback() {
                         @Override
                         public void onCallback(int status) {
-                            if (status == UserAccess.Constants.STATUS_OK) Toast.makeText(context, "User created.", Toast.LENGTH_SHORT).show();
-                            else Toast.makeText(context, "Error. User create failed.", Toast.LENGTH_SHORT).show();
                         }
                     });
 
