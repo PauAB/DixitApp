@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -114,29 +115,39 @@ public class UserAccess {
                 });
     }
 
-    public static void deleteUser(String email, final CreateNewUserCallback callback)
+    public static void deleteUser(String username, final DeleteUserCallback callback)
     {
-        getUserByEmail(email, new UserCallback() {
-            @Override
-            public void onCallback(int status, String username, Map<String, Object> userData) {
-                if (status == Constants.STATUS_OK)
-                {
-                    if (userData != null)
-                    {
-                        userData.put("name", null);
-                        userData.put("email", null);
-                        userData.put("password", null);
-
-                        callback.onCallback(Constants.STATUS_USER_NOT_EXIST);
+        FirebaseFirestore.getInstance().collection("users")
+                .document(username).delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) callback.onCallback(Constants.STATUS_OK);
+                        else callback.onCallback(Constants.STATUS_KO);
                     }
-                    else callback.onCallback(Constants.STATUS_USER_NOT_EXIST);
-                }
-                else callback.onCallback(Constants.STATUS_KO);
-            }
-        });
+                });
+    }
+
+    public static void changeField(String username, final String field, final String newValue, final ChangeFieldCallback callback)
+    {
+        FirebaseFirestore.getInstance().collection("users")
+                .document(username)
+                .update(field, newValue)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) callback.onCallback(Constants.STATUS_OK);
+                        else callback.onCallback(Constants.STATUS_KO);
+                    }
+                });
     }
 
     public interface CreateNewUserCallback
+    {
+        void onCallback(int status);
+    }
+
+    public interface DeleteUserCallback
     {
         void onCallback(int status);
     }
@@ -149,6 +160,11 @@ public class UserAccess {
     public interface UserCallback
     {
         void onCallback(int status, String username, Map<String, Object> userData);
+    }
+
+    public interface ChangeFieldCallback
+    {
+        void onCallback(int status);
     }
 
     public interface Constants

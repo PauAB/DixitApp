@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,6 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
-    FirebaseAuth.AuthStateListener authStateListener;
 
     private Guideline guidelineVerStart;
     private Guideline guidelineVerEnd;
@@ -35,9 +35,9 @@ public class EmailVerificationActivity extends AppCompatActivity {
     private TextView textViewEmailConf;
     private TextView textViewSendAgain;
     private TextView textViewConfirm;
+    private ImageView imageViewBack;
 
     private String email;
-    private boolean userEmailVerified = false;
 
     Context context;
 
@@ -70,6 +70,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
         textViewEmailConf = findViewById(R.id.textViewEmailConf);
         textViewSendAgain = findViewById(R.id.textViewSendAgain);
         textViewConfirm = findViewById(R.id.textViewConfirm);
+        imageViewBack = findViewById(R.id.imageViewBack);
 
         if (currentUser != null) email = currentUser.getEmail();
 
@@ -84,33 +85,36 @@ public class EmailVerificationActivity extends AppCompatActivity {
             }
         });
 
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() != null)
-                {
-                    if (firebaseAuth.getCurrentUser().isEmailVerified())
-                    {
-                        userEmailVerified = true;
-                        Toast.makeText(context, "Email verified", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        };
-
         if(currentUser != null)
         {
             textViewConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (userEmailVerified)
+
+                    currentUser.reload();
+
+                    if (currentUser.isEmailVerified())
                     {
+                        Toast.makeText(context, "Email verified", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(EmailVerificationActivity.this, AppActivity.class);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(EmailVerificationActivity.this, SignInActivity.class);
                         startActivity(intent);
                     }
                 }
             });
         }
+
+        imageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EmailVerificationActivity.this, SignInActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void SendEmail()

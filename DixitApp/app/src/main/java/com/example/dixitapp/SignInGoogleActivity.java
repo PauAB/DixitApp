@@ -111,12 +111,6 @@ public class SignInGoogleActivity extends AppCompatActivity {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("Firebase", "signInWithCredential:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    String username = user.getEmail().split("@")[0];
-                    UserAccess.createNewUser(username, user.getEmail(), user.getDisplayName(), null, new UserAccess.CreateNewUserCallback() {
-                        @Override
-                        public void onCallback(int status) {
-                        }
-                    });
 
                     Intent intent = new Intent(SignInGoogleActivity.this, MainActivity.class);
                     startActivity(intent);

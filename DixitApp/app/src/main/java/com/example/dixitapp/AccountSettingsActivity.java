@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.EditText;
@@ -68,6 +69,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private String password;
     private String newPassword;
     private String confirmPassword;
+    private String username;
 
     Context context;
 
@@ -85,7 +87,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         context = getApplicationContext();
 
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
 
         guidelineVerStart = findViewById(R.id.guidelineVerStart);
         guidelineVerEnd = findViewById(R.id.guidelineVerEnd);
@@ -141,6 +143,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
         if (currentUser != null)
         {
             email = currentUser.getEmail();
+            username = email.split("@")[0];
+
             editTextEmail.setText(email);
 
             UserAccess.getUserByEmail(currentUser.getEmail(), new UserAccess.UserCallback() {
@@ -170,23 +174,34 @@ public class AccountSettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 newEmail = editTextEmail.getText().toString();
 
-                final FirebaseUser user = mAuth.getCurrentUser();
-
                 if (SignInActivity.loggedInWithEmail)
                 {
                     AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
-                    user.reauthenticate(credential)
+                    currentUser.reauthenticate(credential)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task)
                                 {
                                     if (task.isSuccessful())
                                     {
-                                        user.updateEmail(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        currentUser.updateEmail(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) Toast.makeText(context, "Email changed.", Toast.LENGTH_SHORT).show();
+                                                if (task.isSuccessful())
+                                                {
+                                                    UserAccess.changeField(username, "email", newEmail, new UserAccess.ChangeFieldCallback() {
+                                                        @Override
+                                                        public void onCallback(int status){
+                                                            if(status == UserAccess.Constants.STATUS_OK)
+                                                            {
+                                                                Toast.makeText(context, "Email changed.", Toast.LENGTH_SHORT).show();
+                                                                email = newEmail;
+                                                            }
+                                                            else Toast.makeText(context, "Email change failed.", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
                                                 else Toast.makeText(context, "Email change failed.", Toast.LENGTH_SHORT).show();
                                             }
                                         });
@@ -200,16 +215,29 @@ public class AccountSettingsActivity extends AppCompatActivity {
                     GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
                     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
-                    user.reauthenticate(credential)
+                    currentUser.reauthenticate(credential)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful())
                                     {
-                                        user.updateEmail(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        currentUser.updateEmail(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) Toast.makeText(context, "Email changed.", Toast.LENGTH_SHORT).show();
+                                                if (task.isSuccessful())
+                                                {
+                                                    UserAccess.changeField(username, "email", newEmail, new UserAccess.ChangeFieldCallback() {
+                                                        @Override
+                                                        public void onCallback(int status){
+                                                            if(status == UserAccess.Constants.STATUS_OK)
+                                                            {
+                                                                Toast.makeText(context, "Email changed.", Toast.LENGTH_SHORT).show();
+                                                                email = newEmail;
+                                                            }
+                                                            else Toast.makeText(context, "Email change failed.", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
                                                 else Toast.makeText(context, "Email change failed.", Toast.LENGTH_SHORT).show();
                                             }
                                         });
@@ -226,22 +254,33 @@ public class AccountSettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 newPassword = editTextPassword.getText().toString();
 
-                final FirebaseUser user = mAuth.getCurrentUser();
-
                 if (SignInActivity.loggedInWithEmail)
                 {
                     AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
-                    user.reauthenticate(credential)
+                    currentUser.reauthenticate(credential)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful())
                                     {
-                                        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        currentUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) Toast.makeText(context, "Password changed.", Toast.LENGTH_SHORT).show();
+                                                if (task.isSuccessful())
+                                                {
+                                                    UserAccess.changeField(username, "password", newPassword, new UserAccess.ChangeFieldCallback() {
+                                                        @Override
+                                                        public void onCallback(int status) {
+                                                            if(status == UserAccess.Constants.STATUS_OK)
+                                                            {
+                                                                Toast.makeText(context, "Password changed.", Toast.LENGTH_SHORT).show();
+                                                                password = newPassword;
+                                                            }
+                                                            else Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
                                                 else Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
                                             }
                                         });
@@ -255,16 +294,29 @@ public class AccountSettingsActivity extends AppCompatActivity {
                     GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
                     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
-                    user.reauthenticate(credential)
+                    currentUser.reauthenticate(credential)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful())
                                     {
-                                        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        currentUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) Toast.makeText(context, "Password changed.", Toast.LENGTH_SHORT).show();
+                                                if (task.isSuccessful())
+                                                {
+                                                    UserAccess.changeField(username, "password", newPassword, new UserAccess.ChangeFieldCallback() {
+                                                        @Override
+                                                        public void onCallback(int status) {
+                                                            if(status == UserAccess.Constants.STATUS_OK)
+                                                            {
+                                                                Toast.makeText(context, "Password changed.", Toast.LENGTH_SHORT).show();
+                                                                password = newPassword;
+                                                            }
+                                                            else Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
                                                 else Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
                                             }
                                         });
@@ -300,6 +352,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
                 imageViewDeleteBack.setScaleX(0.f);
                 imageViewDeleteBack.setScaleY(0.f);
                 imageViewDeleteBack.setAlpha(0.f);
+
+                editTextDeletePass.setText("");
                 // ------------------------------------------------------
                 DisplayDeleteBackgroundAnim();
             }
@@ -316,86 +370,85 @@ public class AccountSettingsActivity extends AppCompatActivity {
                     {
                         Toast.makeText(context, "Deleting user...", Toast.LENGTH_SHORT).show();
 
-                        final FirebaseUser user = mAuth.getCurrentUser();
+                        if (currentUser != null) {
+                            if (SignInActivity.loggedInWithEmail) {
+                                AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
-                        if (SignInActivity.loggedInWithEmail) {
-                            AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+                                currentUser.reauthenticate(credential)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    currentUser.delete()
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        UserAccess.deleteUser(username, new UserAccess.DeleteUserCallback() {
+                                                                            @Override
+                                                                            public void onCallback(int status) {
+                                                                                switch (status) {
+                                                                                    case UserAccess.Constants.STATUS_OK:
+                                                                                        Toast.makeText(context, "User deleted.", Toast.LENGTH_SHORT).show();
+                                                                                        break;
 
-                            user.reauthenticate(credential)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                user.delete()
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful()) {
-                                                                    Toast.makeText(context, "User deleted.", Toast.LENGTH_SHORT).show();
-                                                                    Intent intent = new Intent(AccountSettingsActivity.this, MainActivity.class);
-                                                                    startActivity(intent);
-                                                                } else
-                                                                    Toast.makeText(context, "Error. User delete failed.", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        });
-
-                                                UserAccess.deleteUser(email, new UserAccess.CreateNewUserCallback() {
-                                                    @Override
-                                                    public void onCallback(int status) {
-                                                        switch (status) {
-                                                            case UserAccess.Constants.STATUS_OK:
-                                                                Toast.makeText(context, "User deleted from database.", Toast.LENGTH_SHORT).show();
-                                                                break;
-
-                                                            case UserAccess.Constants.STATUS_KO:
-                                                                Toast.makeText(context, "Error. User delete from database failed.", Toast.LENGTH_SHORT).show();
-                                                                break;
-                                                        }
-                                                    }
-                                                });
-                                            } else
-                                                Toast.makeText(context, "Error. Authentication failed.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        } else {
-                            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
-                            AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-
-                            user.reauthenticate(credential)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                user.delete()
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful()) {
-                                                                    UserAccess.deleteUser(email, new UserAccess.CreateNewUserCallback() {
-                                                                        @Override
-                                                                        public void onCallback(int status) {
-                                                                            switch (status) {
-                                                                                case UserAccess.Constants.STATUS_USER_NOT_EXIST:
-                                                                                    Toast.makeText(context, "User deleted.", Toast.LENGTH_SHORT).show();
-                                                                                    Intent intent = new Intent(AccountSettingsActivity.this, MainActivity.class);
-                                                                                    startActivity(intent);
-                                                                                    break;
-
-                                                                                case UserAccess.Constants.STATUS_KO:
-                                                                                    Toast.makeText(context, "Error. Authentication failed.", Toast.LENGTH_SHORT).show();
-                                                                                    break;
+                                                                                    case UserAccess.Constants.STATUS_KO:
+                                                                                        Toast.makeText(context, "Error. User delete failed.", Toast.LENGTH_SHORT).show();
+                                                                                        break;
+                                                                                }
                                                                             }
-                                                                        }
-                                                                    });
-                                                                } else
-                                                                    Toast.makeText(context, "Error. User delete failed.", Toast.LENGTH_SHORT).show();
+                                                                        });
+                                                                        Intent intent = new Intent(AccountSettingsActivity.this, MainActivity.class);
+                                                                        startActivity(intent);
+                                                                    } else
+                                                                        Toast.makeText(context, "Error. User delete failed.", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                } else
+                                                    Toast.makeText(context, "Error. Authentication failed.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            } else {
+                                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
+                                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
+                                currentUser.reauthenticate(credential)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    UserAccess.deleteUser(username, new UserAccess.DeleteUserCallback() {
+                                                        @Override
+                                                        public void onCallback(int status) {
+                                                            switch (status) {
+                                                                case UserAccess.Constants.STATUS_OK:
+                                                                    currentUser.delete()
+                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    if (task.isSuccessful()) {
+                                                                                        Toast.makeText(context, "User deleted.", Toast.LENGTH_SHORT).show();
+                                                                                        Intent intent = new Intent(AccountSettingsActivity.this, MainActivity.class);
+                                                                                        startActivity(intent);
+                                                                                    } else
+                                                                                        Toast.makeText(context, "Error. User delete failed.", Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            });
+                                                                    break;
+                                                                case UserAccess.Constants.STATUS_KO:
+                                                                    Toast.makeText(context, "Error. Authentication failed.", Toast.LENGTH_SHORT).show();
+                                                                    break;
                                                             }
-                                                        });
-                                            } else
-                                                Toast.makeText(context, "Error. Authentication failed.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                                        }
+                                                    });
+                                                } else {
+                                                    Toast.makeText(context, "Error. Reauthentication failed.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
                         }
+                        else Toast.makeText(context, "Error. Null user", Toast.LENGTH_SHORT).show();
                     }
                     else Toast.makeText(context, "Passwords don't match", Toast.LENGTH_SHORT).show();
                 }

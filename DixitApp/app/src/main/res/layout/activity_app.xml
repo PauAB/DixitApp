@@ -261,4 +261,82 @@
         app:layout_constraintEnd_toEndOf="@+id/imageViewUserMenu"
         app:layout_constraintTop_toBottomOf="@+id/imageViewUserMenu" />
 
+    <ImageView
+        android:id="@+id/imageViewVerifyBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.7"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBackgroundContent"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewBackgroundContent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBackgroundContent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBackgroundContent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@android:color/background_dark" />
+
+    <ImageView
+        android:id="@+id/imageViewVerifyBorder"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewVerifyBackground"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewVerifyBackground"
+        app:layout_constraintStart_toStartOf="@+id/imageViewVerifyBackground"
+        app:layout_constraintTop_toTopOf="@+id/imageViewVerifyBackground"
+        app:srcCompat="@color/redBorder" />
+
+    <ImageView
+        android:id="@+id/imageViewVerifyRedBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewVerifyBorder"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewVerifyBorder"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageViewVerifyBorder"
+        app:layout_constraintTop_toTopOf="@+id/imageViewVerifyBorder"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@color/redBackground" />
+
+    <TextView
+        android:id="@+id/textViewVerifyMsg1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Please verify your email"
+        android:textColor="@color/blueFonts"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewVerifyRedBackground"
+        app:layout_constraintStart_toStartOf="@+id/imageViewVerifyRedBackground"
+        app:layout_constraintTop_toTopOf="@+id/imageViewVerifyBorder" />
+
+    <TextView
+        android:id="@+id/textViewVerifySend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send email"
+        android:textColor="@color/blueLinks"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewVerifyConfirm"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewVerifyRedBackground"
+        app:layout_constraintStart_toStartOf="@+id/imageViewVerifyRedBackground"
+        app:layout_constraintTop_toBottomOf="@+id/textViewVerifyMsg1" />
+
+    <TextView
+        android:id="@+id/textViewVerifyConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Confirm"
+        android:textColor="@color/blueLinks"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewVerifyRedBackground"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewVerifyRedBackground" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

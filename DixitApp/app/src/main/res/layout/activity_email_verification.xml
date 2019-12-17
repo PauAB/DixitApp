@@ -228,4 +228,13 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
         app:layout_constraintTop_toBottomOf="@+id/textViewSendAgain" />
 
+    <ImageView
+        android:id="@+id/imageViewBack"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toTopOf="@+id/textViewTitle"
+        app:srcCompat="@drawable/ic_iconfinder_arrow_left_183252" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

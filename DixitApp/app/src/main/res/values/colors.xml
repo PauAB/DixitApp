@@ -9,4 +9,7 @@
     <color name="blueLinks">#CEDDEF</color>
     <color name="redBorder">#A80038</color>
     <color name="redBackground">#C72C41</color>
+    <color name="yellowFont">#DEDE43</color>
+    <color name="orangeFont">#FCBA03</color>
+    <color name="greenFont">#4DC934</color>
 </resources>

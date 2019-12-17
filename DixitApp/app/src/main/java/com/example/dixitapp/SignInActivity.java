@@ -4,20 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Guideline;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -196,16 +190,8 @@ public class SignInActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful())
                                     {
-                                        FirebaseUser user = mAuth.getCurrentUser();
-
-                                        if (user.isEmailVerified())
-                                        {
-                                            loggedIn = true;
-
-                                            Intent intent = new Intent(SignInActivity.this, AppActivity.class);
-                                            startActivity(intent);
-                                        }
-                                        else Toast.makeText(context, "Verify your email first.", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(SignInActivity.this, AppActivity.class);
+                                        startActivity(intent);
                                     }
                                     else Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                 }

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -16,11 +17,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.regex.Pattern;
 
 public class CreateAccActivity extends AppCompatActivity {
 
@@ -46,6 +53,7 @@ public class CreateAccActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private EditText editTextPasswordConfirm;
     private ImageView imageViewBack;
+    private TextView textViewPassFeedback;
 
     private String name;
     private String email;
@@ -70,6 +78,17 @@ public class CreateAccActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
+        AuthCredential credential;
+        if (account != null)
+        {
+            credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        }
+        else
+        {
+            credential = null;
+        }
+
         guidelineVerStart = findViewById(R.id.guidelineVerStart);
         guidelineVerEnd = findViewById(R.id.guidelineVerEnd);
         guidelineHorStart = findViewById(R.id.guidelineHorStart);
@@ -90,7 +109,35 @@ public class CreateAccActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextPasswordConfirm = findViewById(R.id.editTextPasswordConfirm);
         imageViewBack = findViewById(R.id.imageViewBack);
+        textViewPassFeedback = findViewById(R.id.textViewPassFeedback);
 
+        textViewPassFeedback.setVisibility(View.INVISIBLE);
+
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (!SignInActivity.loggedInWithEmail)
+        {
+            if (credential != null) {
+                currentUser.reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    name = currentUser.getDisplayName();
+                                    email = currentUser.getEmail();
+
+                                    editTextName.setText(name);
+                                    editTextEmail.setText(email);
+
+                                    Toast.makeText(context, "User load successful", Toast.LENGTH_SHORT).show();
+                                } else
+                                    Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        }
+
+        editTextName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(24)});
         editTextName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -109,6 +156,7 @@ public class CreateAccActivity extends AppCompatActivity {
             }
         });
 
+        editTextEmail.setFilters(new InputFilter[] {new InputFilter.LengthFilter(24)});
         editTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -128,6 +176,7 @@ public class CreateAccActivity extends AppCompatActivity {
             }
         });
 
+        editTextPassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
         editTextPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -138,6 +187,30 @@ public class CreateAccActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (textViewPassBackground.getVisibility() == View.VISIBLE) textViewPassBackground.setVisibility(View.INVISIBLE);
                 else if (textViewPassBackground.getVisibility() == View.INVISIBLE && s.length() == 0) textViewPassBackground.setVisibility(View.VISIBLE);
+
+                if (s.length() > 0) textViewPassFeedback.setVisibility(View.VISIBLE);
+                else if (s.length() == 0) textViewPassFeedback.setVisibility(View.INVISIBLE);
+
+                if (s.length() < 8)
+                {
+                    textViewPassFeedback.setText("Password too short");
+                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.redBackground));
+                }
+                else if (s.length() >= 8 && s.length() < 12)
+                {
+                    textViewPassFeedback.setText("Low security password");
+                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.yellowFont));
+                }
+                else if (s.length() >= 12 && s.length() < 16)
+                {
+                    textViewPassFeedback.setText("Medium security password");
+                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.orangeFont));
+                }
+                else if (s.length() >= 18)
+                {
+                    textViewPassFeedback.setText("High security password");
+                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.greenFont));
+                }
             }
 
             @Override
@@ -146,21 +219,37 @@ public class CreateAccActivity extends AppCompatActivity {
             }
         });
 
+        editTextPasswordConfirm.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
         editTextPasswordConfirm.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                if (!password.equals(passwordConfirm))
+                {
+                    textViewPassFeedback.setText("Passwords don't match");
+                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.redBackground));
+                }
+                else if (password.equals(passwordConfirm)) textViewPassFeedback.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (textViewPassConfBackground.getVisibility() == View.VISIBLE) textViewPassConfBackground.setVisibility(View.INVISIBLE);
                 else if (textViewPassConfBackground.getVisibility() == View.INVISIBLE && s.length() == 0) textViewPassConfBackground.setVisibility(View.VISIBLE);
+
+                if (s.length() > 0) textViewPassFeedback.setVisibility(View.VISIBLE);
+                else if (s.length() == 0) textViewPassFeedback.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 passwordConfirm = editTextPasswordConfirm.getText().toString();
+
+                if (!password.equals(passwordConfirm))
+                {
+                    textViewPassFeedback.setText("Passwords don't match");
+                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.redBackground));
+                }
+                else if (password.equals(passwordConfirm)) textViewPassFeedback.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -194,38 +283,49 @@ public class CreateAccActivity extends AppCompatActivity {
                                                        break;
 
                                                         case UserAccess.Constants.STATUS_USER_NOT_EXIST:
-                                                            mAuth.createUserWithEmailAndPassword(email, password)
-                                                                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                                                            if(task.isSuccessful())
-                                                                            {
-                                                                                FirebaseUser user = mAuth.getCurrentUser();
+                                                            if (SignInActivity.loggedInWithEmail)
+                                                            {
+                                                                mAuth.createUserWithEmailAndPassword(email, password)
+                                                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    UserAccess.createNewUser(username, name, email, password, new UserAccess.CreateNewUserCallback() {
+                                                                                        @Override
+                                                                                        public void onCallback(int status) {
+                                                                                            if (status == UserAccess.Constants.STATUS_OK) {
+                                                                                                Toast.makeText(context, "User created.", Toast.LENGTH_SHORT).show();
 
-                                                                                UserAccess.createNewUser(username, name, email, password, new UserAccess.CreateNewUserCallback() {
-                                                                                    @Override
-                                                                                    public void onCallback(int status) {
-                                                                                        if (status == UserAccess.Constants.STATUS_OK) {
-                                                                                            Toast.makeText(context, "User created.", Toast.LENGTH_SHORT).show();
-
-                                                                                            Intent intent = new Intent(CreateAccActivity.this, EmailVerificationActivity.class);
-                                                                                            startActivity(intent);
-                                                                                        } else if (status == UserAccess.Constants.STATUS_KO) {
-                                                                                            Toast.makeText(context, "Error. User creation failed.", Toast.LENGTH_SHORT).show();
+                                                                                                Intent intent = new Intent(CreateAccActivity.this, EmailVerificationActivity.class);
+                                                                                                startActivity(intent);
+                                                                                            } else if (status == UserAccess.Constants.STATUS_KO) {
+                                                                                                Toast.makeText(context, "Error. User creation failed.", Toast.LENGTH_SHORT).show();
+                                                                                            }
                                                                                         }
-                                                                                    }
-                                                                                });
+                                                                                    });
+                                                                                } else {
+                                                                                    Toast.makeText(context, "Email already in use", Toast.LENGTH_SHORT).show();
+                                                                                    Log.w("User", "Authentication failed.", task.getException());
+                                                                                }
+                                                                            }
+                                                                        });
+                                                            }
+                                                            else
+                                                            {
+                                                                UserAccess.createNewUser(username, name, email, password, new UserAccess.CreateNewUserCallback() {
+                                                                    @Override
+                                                                    public void onCallback(int status) {
+                                                                        if (status == UserAccess.Constants.STATUS_OK) {
+                                                                            Toast.makeText(context, "User created.", Toast.LENGTH_SHORT).show();
 
-                                                                                Intent intent = new Intent(CreateAccActivity.this, EmailVerificationActivity.class);
-                                                                                startActivity(intent);
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                Toast.makeText(context, "Email already in use", Toast.LENGTH_SHORT).show();
-                                                                                Log.w("User", "Authentication failed.", task.getException());
-                                                                            }
+                                                                            Intent intent = new Intent(CreateAccActivity.this, EmailVerificationActivity.class);
+                                                                            startActivity(intent);
+                                                                        } else if (status == UserAccess.Constants.STATUS_KO) {
+                                                                            Toast.makeText(context, "Error. User creation failed.", Toast.LENGTH_SHORT).show();
                                                                         }
-                                                                    });
+                                                                    }
+                                                                });
+                                                            }
                                                             break;
                                                         case UserAccess.Constants.STATUS_KO:
                                                             Toast.makeText(context, "Error. Email authentication failed.", Toast.LENGTH_SHORT).show();
