@@ -47,12 +47,14 @@ public class AppActivity extends AppCompatActivity {
     private ImageView imageViewUserMenu;
 
     // VERIFY EMAIL VIEWS ------------------------------
+    /*
     private ImageView imageViewVerifyBackground;
     private ImageView imageViewVerifyBorder;
     private ImageView imageViewVerifyRedBackground;
     private TextView textViewVerifyMsg1;
     private TextView textViewVerifySend;
     private TextView textViewVerifyConfirm;
+    */
     // -------------------------------------------------
 
     // SEPARATOR ANIM VIEWS ----------------------------------------------
@@ -104,6 +106,7 @@ public class AppActivity extends AppCompatActivity {
         // -------------------------------------------------------------------
 
         // GET & SET VERIFY MSG DEFAULTS -------------------------------------
+        /*
         imageViewVerifyBackground = findViewById(R.id.imageViewVerifyBackground);
         imageViewVerifyBorder = findViewById(R.id.imageViewVerifyBorder);
         imageViewVerifyRedBackground = findViewById(R.id.imageViewVerifyRedBackground);
@@ -119,6 +122,7 @@ public class AppActivity extends AppCompatActivity {
         textViewVerifyMsg1.setAlpha(0.f);
         textViewVerifySend.setAlpha(0.f);
         textViewVerifyConfirm.setAlpha(0.f);
+        */
         // -------------------------------------------------------------------
 
         // GET & SET SEPARATOR ANIM DEFAULTS ---------------------------------------------------
@@ -158,11 +162,12 @@ public class AppActivity extends AppCompatActivity {
         imageViewUserMenu = findViewById(R.id.imageViewUserMenu);
 
         user.reload();
-
+/*
         if(!user.isEmailVerified())
         {
             DisplayFadeVerifyAnim();
         }
+ */
 
         username = user.getEmail().split("@")[0];
 
@@ -224,7 +229,7 @@ public class AppActivity extends AppCompatActivity {
                 }
             }
         });
-
+/*
         textViewVerifySend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,7 +246,7 @@ public class AppActivity extends AppCompatActivity {
                 else Toast.makeText(context, "Email not verified yet.", Toast.LENGTH_SHORT).show();
             }
         });
-
+ */
         textViewAccSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,7 +267,7 @@ public class AppActivity extends AppCompatActivity {
             }
         });
     }
-
+/*
     private void SendEmail()
     {
         if (user != null)
@@ -278,7 +283,8 @@ public class AppActivity extends AppCompatActivity {
         }
         else Toast.makeText(context, "Error. User not found", Toast.LENGTH_SHORT).show();
     }
-
+ */
+/*
     private void DisplayFadeVerifyAnim()
     {
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 0.7f);
@@ -422,7 +428,7 @@ public class AppActivity extends AppCompatActivity {
             }
         });
     }
-
+*/
     private void DisplaySeparatorAnim()
     {
 

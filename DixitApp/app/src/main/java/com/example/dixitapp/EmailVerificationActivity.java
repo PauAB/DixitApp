@@ -143,10 +143,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else
-                    {
-                        Intent intent = new Intent(EmailVerificationActivity.this, SignInActivity.class);
-                        startActivity(intent);
-                    }
+                        Toast.makeText(context, "Please verify your email first", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -154,7 +151,10 @@ public class EmailVerificationActivity extends AppCompatActivity {
         imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EmailVerificationActivity.this, SignInActivity.class);
+                mAuth.signOut();
+                Toast.makeText(context, "Signed Out.", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(EmailVerificationActivity.this, CreateAccActivity.class);
                 startActivity(intent);
             }
         });
@@ -168,8 +168,11 @@ public class EmailVerificationActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) Toast.makeText(context, "Email sent.", Toast.LENGTH_SHORT).show();
-                            else Toast.makeText(context, "Error. Email could not be sent.", Toast.LENGTH_SHORT).show();
+                            if (task.isSuccessful())
+                                Toast.makeText(context, "Email sent.", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(context, "Error. Email could not be sent.", Toast.LENGTH_SHORT).show();
+
                         }
                     });
         }

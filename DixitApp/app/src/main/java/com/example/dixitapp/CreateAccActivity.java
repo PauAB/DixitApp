@@ -3,10 +3,12 @@ package com.example.dixitapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Guideline;
+import androidx.core.content.ContextCompat;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -32,6 +34,84 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.regex.Pattern;
 
 public class CreateAccActivity extends AppCompatActivity {
+
+    public enum PasswordStrength
+    {
+        WEAK(R.string.weak, R.color.redBackground),
+        MEDIUM(R.string.medium, R.color.orangeFont),
+        STRONG(R.string.strong, R.color.yellowFont),
+        VERY_STRONG(R.string.veryStrong, R.color.greenFont);
+
+        public int msg;
+        public int color;
+        private static int MIN_LENGHT = 8;
+        private static int MAX_LENGHT = 15;
+
+        PasswordStrength(int msg, int color)
+        {
+            this.msg = msg;
+            this.color = color;
+        }
+
+        public static PasswordStrength calculate(String password)
+        {
+            int score = 0;
+            boolean upper = false;
+            boolean lower = false;
+            boolean digit = false;
+            boolean specialChar = false;
+
+            for (int i = 0; i < password.length(); i++)
+            {
+                char c = password.charAt(i);
+
+                if (!specialChar && !Character.isLetterOrDigit(c))
+                {
+                    score++;
+                    specialChar = true;
+                }
+                else
+                {
+                    if (!digit && Character.isDigit(c))
+                    {
+                        score++;
+                        digit = true;
+                    }
+                    else
+                    {
+                        if (!upper || !lower)
+                        {
+                            if (Character.isUpperCase(c))
+                                upper = true;
+                            else
+                                lower = true;
+
+                            if (upper && lower)
+                                score++;
+                        }
+                    }
+                }
+            }
+
+            int length = password.length();
+
+            if(length > MAX_LENGHT)
+                score++;
+            else if (length < MIN_LENGHT)
+                score = 0;
+
+            switch (score)
+            {
+                case 0: return WEAK;
+                case 1: return MEDIUM;
+                case 2: return STRONG;
+                case 3: return VERY_STRONG;
+                default:
+            }
+
+            return VERY_STRONG;
+        }
+    }
 
     private FirebaseAuth mAuth;
 
@@ -234,26 +314,7 @@ public class CreateAccActivity extends AppCompatActivity {
                 if (s.length() > 0) textViewPassFeedback.setVisibility(View.VISIBLE);
                 else if (s.length() == 0) textViewPassFeedback.setVisibility(View.INVISIBLE);
 
-                if (s.length() < 8)
-                {
-                    textViewPassFeedback.setText("Password too short");
-                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.redBackground));
-                }
-                else if (s.length() >= 8 && s.length() < 12)
-                {
-                    textViewPassFeedback.setText("Low security password");
-                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.yellowFont));
-                }
-                else if (s.length() >= 12 && s.length() < 16)
-                {
-                    textViewPassFeedback.setText("Medium security password");
-                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.orangeFont));
-                }
-                else if (s.length() >= 18)
-                {
-                    textViewPassFeedback.setText("High security password");
-                    textViewPassFeedback.setTextColor(getResources().getColor(R.color.greenFont));
-                }
+                calculatePasswordStrength(s.toString());
             }
 
             @Override
@@ -399,6 +460,13 @@ public class CreateAccActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void calculatePasswordStrength(String str)
+    {
+        PasswordStrength passwordStrength = PasswordStrength.calculate(str);
+        textViewPassFeedback.setText(passwordStrength.msg);
+        textViewPassFeedback.setTextColor(ContextCompat.getColor(context, passwordStrength.color));
     }
 
     private void DisplaySeparatorAnim()

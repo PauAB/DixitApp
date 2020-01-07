@@ -64,7 +64,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private ImageView imageViewDeleteBack;
     // ----------------------------------
 
-    // SEPARATOR ANIM VIEWS ----------------------------------------------
+    // SEPARATOR ANIM VIEWS ---------------------
     private ImageView imageViewBaseball;
     private ImageView imageViewBasketball;
     private ImageView imageViewBeachball;
@@ -73,7 +73,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private ImageView imageViewPoolball;
     private ImageView imageViewTennisball;
     private ImageView imageViewVolleyball;
-    // ---------------------------------------------------------
+    // ------------------------------------------
 
     private String email;
     private String newEmail;
@@ -151,7 +151,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         imageViewDeleteBack.setAlpha(0.f);
         // -------------------------------------------------------------------
 
-        // GET & SET SEPARATOR ANIM DEFAULTS ---------------------------------------------------
+        // GET & SET SEPARATOR ANIM DEFAULTS ---------------------------------------
         imageViewBaseball = findViewById(R.id.imageViewBaseball);
         imageViewBasketball = findViewById(R.id.imageViewBasketball);
         imageViewBeachball = findViewById(R.id.imageViewBeachball);
@@ -177,7 +177,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         imageViewTennisball.setScaleY(0.f);
         imageViewVolleyball.setScaleX(0.f);
         imageViewVolleyball.setScaleY(0.f);
-        // ---------------------------------------------------------------------------
+        // -------------------------------------------------------------------------
 
         DisplaySeparatorAnim();
 

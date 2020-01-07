@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">DixitApp</string>
+    <string name="weak">Weak password</string>
+    <string name="medium">Medium password</string>
+    <string name="strong">Strong password</string>
+    <string name="veryStrong">Very Strong password</string>
 </resources>

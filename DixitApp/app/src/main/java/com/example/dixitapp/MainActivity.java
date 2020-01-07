@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                    Intent intent = new Intent(MainActivity.this, EmailVerificationActivity.class);
                     startActivity(intent);
                 }
             }
