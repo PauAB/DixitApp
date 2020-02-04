@@ -116,7 +116,7 @@ public class SetInitProfileActivity extends AppCompatActivity {
                                                     break;
 
                                                 case UserAccess.Constants.STATUS_USER_NOT_EXIST:
-                                                    UserAccess.createNewUser(username, name, email, password, new UserAccess.CreateNewUserCallback() {
+                                                    UserAccess.createNewUser(username, name, email, new UserAccess.CreateNewUserCallback() {
                                                         @Override
                                                         public void onCallback(int status) {
                                                             if (status == UserAccess.Constants.STATUS_OK) {
