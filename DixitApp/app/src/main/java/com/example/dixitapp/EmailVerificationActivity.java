@@ -8,6 +8,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
@@ -171,8 +172,10 @@ public class EmailVerificationActivity extends AppCompatActivity {
                             if (task.isSuccessful())
                                 Toast.makeText(context, "Email sent.", Toast.LENGTH_SHORT).show();
                             else
+                            {
                                 Toast.makeText(context, "Error. Email could not be sent.", Toast.LENGTH_SHORT).show();
-
+                                Log.i("User", "" + task.getException());
+                            }
                         }
                     });
         }

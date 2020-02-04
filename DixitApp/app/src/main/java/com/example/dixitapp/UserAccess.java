@@ -14,10 +14,10 @@ import java.util.Map;
 
 public class UserAccess {
 
-    public static void createNewUser(String username, String email, String name, String password, final CreateNewUserCallback callback)
+    public static void createNewUser(String username, String email, String name, final CreateNewUserCallback callback)
     {
         FirebaseFirestore.getInstance().collection("users").document(username)
-                .set(new User(email, name, password).toMap())
+                .set(new User(email, name).toMap())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

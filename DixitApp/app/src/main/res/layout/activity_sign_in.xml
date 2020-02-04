@@ -148,6 +148,16 @@
         app:layout_constraintTop_toTopOf="@+id/textViewSignInWith"
         app:srcCompat="@drawable/googleg_standard_color_18" />
 
+    <ImageView
+        android:id="@+id/imageViewPhoneSignIn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewSignInWith"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewGoogleSignIn"
+        app:layout_constraintTop_toTopOf="@+id/textViewSignInWith"
+        app:srcCompat="@drawable/ic_phone" />
+
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
@@ -214,12 +224,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="No account?"
         android:textColor="@color/blueFonts"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLogIn" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewReset" />
 
     <TextView
         android:id="@+id/textViewEmailBackground"
@@ -264,5 +274,29 @@
         app:layout_constraintBottom_toBottomOf="@+id/textViewNoAccount"
         app:layout_constraintStart_toEndOf="@+id/textViewNoAccount"
         app:layout_constraintTop_toTopOf="@+id/textViewNoAccount" />
+
+    <TextView
+        android:id="@+id/textViewReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="Forget password?"
+        android:textColor="@color/blueFonts"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogIn" />
+
+    <TextView
+        android:id="@+id/textViewResetPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Reset it"
+        android:textColor="@color/blueLinks"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewReset"
+        app:layout_constraintStart_toEndOf="@+id/textViewReset"
+        app:layout_constraintTop_toTopOf="@+id/textViewReset" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

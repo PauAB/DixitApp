@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreatePhoneAccActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.99" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.99" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineContentStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineContentEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <ImageView
+        android:id="@+id/imageViewBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineVerEnd"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineVerStart"
+        app:srcCompat="@color/blueBackground" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="HOBBIES"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/blueFonts"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineVerStart" />
+
+    <ImageView
+        android:id="@+id/imageViewBack"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toTopOf="@+id/textViewTitle"
+        app:srcCompat="@drawable/ic_iconfinder_arrow_left_183252" />
+
+    <TextView
+        android:id="@+id/textViewHelpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please write yourphone number"
+        android:textColor="@color/blueFonts"
+        app:layout_constraintBottom_toTopOf="@+id/editTextPhone"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:ems="10"
+        android:inputType="phone"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <TextView
+        android:id="@+id/textViewHelpText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="You'll receive an authentication code via SMS"
+        android:textColor="@color/blueFonts"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
+
+    <TextView
+        android:id="@+id/textViewConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Confirm"
+        android:textColor="@color/blueLinks"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHelpText2" />
+
+    <ImageView
+        android:id="@+id/imageViewBaseball"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewConfirm"
+        app:srcCompat="@drawable/ic_iconfinder_baseball_1271428" />
+
+    <ImageView
+        android:id="@+id/imageViewBasketball"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBaseball"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBaseball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBaseball"
+        app:srcCompat="@drawable/ic_iconfinder_basketball_1271432" />
+
+    <ImageView
+        android:id="@+id/imageViewBeacball"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBasketball"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBasketball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBasketball"
+        app:srcCompat="@drawable/ic_iconfinder_beachball_1271430" />
+
+    <ImageView
+        android:id="@+id/imageViewCricketball"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBeacball"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBeacball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBeacball"
+        app:srcCompat="@drawable/ic_iconfinder_cricket_1271429" />
+
+    <ImageView
+        android:id="@+id/imageViewVolleyball"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewCricketball"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintTop_toTopOf="@+id/imageViewCricketball"
+        app:srcCompat="@drawable/ic_iconfinder_volleyball_1271423" />
+
+    <ImageView
+        android:id="@+id/imageViewTennisball"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewVolleyball"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewVolleyball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewVolleyball"
+        app:srcCompat="@drawable/ic_iconfinder_tennis_1271424" />
+
+    <ImageView
+        android:id="@+id/imageViewPoolball"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewTennisball"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewTennisball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewTennisball"
+        app:srcCompat="@drawable/ic_iconfinder_pool_1271426" />
+
+    <ImageView
+        android:id="@+id/imageViewFootball"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewPoolball"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewPoolball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewPoolball"
+        app:srcCompat="@drawable/ic_iconfinder_football_1271425" />
+
+    <TextView
+        android:id="@+id/textViewNotSent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Did not receive the code?"
+        android:textColor="@color/blueFonts"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBaseball" />
+
+    <TextView
+        android:id="@+id/textViewSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send again"
+        android:textColor="@color/blueLinks"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewNotSent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewNotSent" />
+
+    <TextView
+        android:id="@+id/textViewPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:alpha="0.5"
+        android:text="Phone"
+        android:textColor="@color/blueLinks"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPhone"
+        app:layout_constraintStart_toStartOf="@+id/editTextPhone"
+        app:layout_constraintTop_toTopOf="@+id/editTextPhone" />
+</androidx.constraintlayout.widget.ConstraintLayout>

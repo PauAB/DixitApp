@@ -8,8 +8,10 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.EditText;
@@ -19,15 +21,24 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 
-public class SignInActivity extends AppCompatActivity {
+import java.util.concurrent.TimeUnit;
 
-    FirebaseAuth mAuth;
+public class CreatePhoneAccActivity extends AppCompatActivity {
 
     private Globals globals;
+
+    private FirebaseAuth mAuth;
+
+    private Context context;
 
     private Guideline guidelineVerStart;
     private Guideline guidelineVerEnd;
@@ -38,16 +49,6 @@ public class SignInActivity extends AppCompatActivity {
     static final float END_VER_POS = 1f;
     static final float START_HOR_POS = 0f;
     static final float END_HOR_POS = 1f;
-
-    private ImageView imageViewGoogleSignIn;
-    private ImageView imageViewPhoneSignIn;
-    private TextView textViewEmailBackground;
-    private TextView textViewPasswordBackground;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private TextView textViewLogIn;
-    private TextView textViewCreateAcc;
-    private TextView textViewResetPass;
 
     // ANIM VIEWS ----------------------------------------------
     private ImageView imageViewBaseball;
@@ -60,17 +61,21 @@ public class SignInActivity extends AppCompatActivity {
     private ImageView imageViewVolleyball;
     // ---------------------------------------------------------
 
-    private String email;
-    private String password;
+    private ImageView imageViewBack;
+    private TextView textViewPhone;
+    private TextView textViewConfirm;
+    private TextView textViewSend;
+    private EditText editTextPhone;
 
-    static boolean loggedInWithEmail = true;
-
-    Context context;
+    private String phone;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
+    private PhoneAuthProvider.ForceResendingToken resendToken;
+    private String mVerificationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_create_phone_acc);
 
         try
         {
@@ -80,9 +85,9 @@ public class SignInActivity extends AppCompatActivity {
 
         globals = (Globals)getApplication();
 
-        context = getApplicationContext();
-
         mAuth = FirebaseAuth.getInstance();
+
+        context = getApplicationContext();
 
         guidelineVerStart = findViewById(R.id.guidelineVerStart);
         guidelineVerEnd = findViewById(R.id.guidelineVerEnd);
@@ -94,15 +99,11 @@ public class SignInActivity extends AppCompatActivity {
         guidelineHorStart.setGuidelinePercent(START_HOR_POS);
         guidelineHorEnd.setGuidelinePercent(END_HOR_POS);
 
-        imageViewGoogleSignIn = findViewById(R.id.imageViewGoogleSignIn);
-        imageViewPhoneSignIn = findViewById(R.id.imageViewPhoneSignIn);
-        textViewEmailBackground = findViewById(R.id.textViewEmailBackground);
-        textViewPasswordBackground = findViewById(R.id.textViewPasswordBackground);
-        editTextEmail = findViewById(R.id.editTextEmail);
-        editTextPassword = findViewById(R.id.editTextPassword);
-        textViewLogIn = findViewById(R.id.textViewLogIn);
-        textViewCreateAcc = findViewById(R.id.textViewCreateAcc);
-        textViewResetPass = findViewById(R.id.textViewResetPass);
+        imageViewBack = findViewById(R.id.imageViewBack);
+        textViewPhone = findViewById(R.id.textViewPhone);
+        textViewConfirm = findViewById(R.id.textViewConfirm);
+        textViewSend = findViewById(R.id.textViewSend);
+        editTextPhone = findViewById(R.id.editTextPhone);
 
         // GET & SET ANIM DEFAULTS ---------------------------------------------------
         imageViewBaseball = findViewById(R.id.imageViewBaseball);
@@ -134,35 +135,15 @@ public class SignInActivity extends AppCompatActivity {
 
         DisplaySeparatorAnim();
 
-        imageViewGoogleSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loggedInWithEmail = false;
-
-                Intent intent = new Intent(SignInActivity.this, SignInGoogleActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        imageViewPhoneSignIn.setOnClickListener(new View.OnClickListener() {
+        imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loggedInWithEmail = false;
-
-                Intent intent = new Intent(SignInActivity.this, CreatePhoneAccActivity.class);
+                Intent intent = new Intent(CreatePhoneAccActivity.this, SignInActivity.class);
                 startActivity(intent);
             }
         });
 
-        textViewResetPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SignInActivity.this, ResetPassActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        editTextEmail.addTextChangedListener(new TextWatcher() {
+        editTextPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -170,80 +151,107 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (textViewEmailBackground.getVisibility() == View.VISIBLE) textViewEmailBackground.setVisibility(View.INVISIBLE);
-                else if (textViewEmailBackground.getVisibility() == View.INVISIBLE && s.length() == 0) textViewEmailBackground.setVisibility(View.VISIBLE);
-
+                if (textViewPhone.getVisibility() == View.VISIBLE) textViewPhone.setVisibility(View.INVISIBLE);
+                else if (textViewPhone.getVisibility() == View.INVISIBLE && s.length() == 0) textViewPhone.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                email = editTextEmail.getText().toString();
+                phone = editTextPhone.getText().toString();
             }
         });
 
-        editTextPassword.addTextChangedListener(new TextWatcher() {
+        callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                Toast.makeText(context, "Verification complete.", Toast.LENGTH_SHORT).show();
 
+                SignInWithPhoneAuthCredential(credential);
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (textViewPasswordBackground.getVisibility() == View.VISIBLE) textViewPasswordBackground.setVisibility(View.INVISIBLE);
-                else if (textViewPasswordBackground.getVisibility() == View.INVISIBLE && s.length() == 0) textViewPasswordBackground.setVisibility(View.VISIBLE);
-            }
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                Toast.makeText(context, "Verification failed.", Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        textViewLogIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loggedInWithEmail = true;
-
-                password = editTextPassword.getText().toString();
-                globals.setPassword(password);
-
-                Toast.makeText(context, "Logging In...", Toast.LENGTH_SHORT).show();
-
-                if (password != null && email != null)
+                if (e instanceof FirebaseAuthInvalidCredentialsException)
                 {
-                    mAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful())
-                                    {
-                                        mAuth.getCurrentUser().reload();
-
-                                        if (mAuth.getCurrentUser().isEmailVerified())
-                                        {
-                                            Intent intent = new Intent(SignInActivity.this, AppActivity.class);
-                                            startActivity(intent);
-                                        }
-                                        else
-                                        {
-                                            Intent intent = new Intent(SignInActivity.this, EmailVerificationActivity.class);
-                                            startActivity(intent);
-                                        }
-                                    }
-                                    else Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                    Toast.makeText(context, "Invalid phone number.", Toast.LENGTH_SHORT).show();
+                    Log.i("User", "" + e);
                 }
-                else Toast.makeText(context, "Please, complete all the fields", Toast.LENGTH_SHORT).show();
+                else if (e instanceof FirebaseTooManyRequestsException)
+                {
+                    Toast.makeText(context, "Too many requests. Try again later", Toast.LENGTH_SHORT).show();
+                    Log.i("User", "" + e);
+                }
             }
-        });
 
-        textViewCreateAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                Toast.makeText(context, "Code sent.", Toast.LENGTH_SHORT).show();
+
+                mVerificationId = verificationId;
+                resendToken = token;
+            }
+        };
+
+        textViewConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignInActivity.this, CreateAccActivity.class);
-                startActivity(intent);
+                PhoneNumberVerification();
+                VerifyPhoneNumberWithCode(mVerificationId, );
             }
         });
+
+        textViewSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ResendVerificationCode(phone, resendToken);
+            }
+        });
+    }
+
+    private void PhoneNumberVerification()
+    {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(phone, 60, TimeUnit.SECONDS, this, callbacks);
+    }
+
+    private void VerifyPhoneNumberWithCode(String verificationId, String code)
+    {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        SignInWithPhoneAuthCredential(credential);
+    }
+
+    private void SignInWithPhoneAuthCredential(PhoneAuthCredential credential)
+    {
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful())
+                {
+                    Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
+                    if (task.getException() instanceof FirebaseAuthInvalidCredentialsException)
+                    {
+                        Toast.makeText(context, "Invalid code.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private void ResendVerificationCode(String phone, PhoneAuthProvider.ForceResendingToken resendingToken)
+    {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phone,
+                60,
+                TimeUnit.SECONDS,
+                this,
+                callbacks,
+                resendingToken
+        );
     }
 
     private void DisplaySeparatorAnim()

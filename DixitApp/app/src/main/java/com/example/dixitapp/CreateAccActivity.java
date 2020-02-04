@@ -113,6 +113,8 @@ public class CreateAccActivity extends AppCompatActivity {
         }
     }
 
+    private Globals globals;
+
     private FirebaseAuth mAuth;
 
     private Guideline guidelineVerStart;
@@ -166,6 +168,8 @@ public class CreateAccActivity extends AppCompatActivity {
             this.getSupportActionBar().hide();
         }
         catch (NullPointerException e){}
+
+        globals = (Globals)getApplication();
 
         context = getApplicationContext();
 
@@ -299,7 +303,6 @@ public class CreateAccActivity extends AppCompatActivity {
             }
         });
 
-        editTextPassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
         editTextPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -320,10 +323,11 @@ public class CreateAccActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 password = editTextPassword.getText().toString();
+
+                globals.setPassword(password);
             }
         });
 
-        editTextPasswordConfirm.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
         editTextPasswordConfirm.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -394,7 +398,7 @@ public class CreateAccActivity extends AppCompatActivity {
                                                                             @Override
                                                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                                                 if (task.isSuccessful()) {
-                                                                                    UserAccess.createNewUser(username, name, email, password, new UserAccess.CreateNewUserCallback() {
+                                                                                    UserAccess.createNewUser(username, name, email, new UserAccess.CreateNewUserCallback() {
                                                                                         @Override
                                                                                         public void onCallback(int status) {
                                                                                             if (status == UserAccess.Constants.STATUS_OK) {
@@ -416,7 +420,7 @@ public class CreateAccActivity extends AppCompatActivity {
                                                             }
                                                             else
                                                             {
-                                                                UserAccess.createNewUser(username, name, email, password, new UserAccess.CreateNewUserCallback() {
+                                                                UserAccess.createNewUser(username, name, email, new UserAccess.CreateNewUserCallback() {
                                                                     @Override
                                                                     public void onCallback(int status) {
                                                                         if (status == UserAccess.Constants.STATUS_OK) {

@@ -36,6 +36,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
+    private Globals globals;
+
     private Guideline guidelineVerStart;
     private Guideline guidelineVerEnd;
     private Guideline guidelineHorStart;
@@ -95,6 +97,9 @@ public class AccountSettingsActivity extends AppCompatActivity {
         }
         catch (NullPointerException e){}
 
+        globals = (Globals)getApplication();
+        password = globals.getPassword();
+
         context = getApplicationContext();
 
         mAuth = FirebaseAuth.getInstance();
@@ -151,7 +156,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         imageViewDeleteBack.setAlpha(0.f);
         // -------------------------------------------------------------------
 
-        // GET & SET SEPARATOR ANIM DEFAULTS ---------------------------------------
+        // GET & SET SEPARATOR ANIM DEFAULTS ---------------------------------
         imageViewBaseball = findViewById(R.id.imageViewBaseball);
         imageViewBasketball = findViewById(R.id.imageViewBasketball);
         imageViewBeachball = findViewById(R.id.imageViewBeachball);
@@ -177,7 +182,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         imageViewTennisball.setScaleY(0.f);
         imageViewVolleyball.setScaleX(0.f);
         imageViewVolleyball.setScaleY(0.f);
-        // -------------------------------------------------------------------------
+        // -------------------------------------------------------------------
 
         DisplaySeparatorAnim();
 
@@ -187,36 +192,16 @@ public class AccountSettingsActivity extends AppCompatActivity {
             username = email.split("@")[0];
 
             editTextEmail.setText(email);
-
-            UserAccess.getUserByEmail(currentUser.getEmail(), new UserAccess.UserCallback() {
-                @Override
-                public void onCallback(int status, String username, Map<String, Object> userData) {
-                    switch (status)
-                    {
-                        case UserAccess.Constants.STATUS_OK:
-                            if (userData != null)
-                            {
-                                password = userData.toString().split("=")[1].split(",")[0];
-                                editTextPassword.setText(password);
-                            }
-                            else Toast.makeText(context, "User data authentication failed.", Toast.LENGTH_SHORT).show();
-                            break;
-
-                        case UserAccess.Constants.STATUS_KO:
-                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-            });
         }
 
         textViewChangeEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 newEmail = editTextEmail.getText().toString();
 
-                if (!newEmail.equals(email)) {
-
+                if (!newEmail.equals(email))
+                {
                     Toast.makeText(context, "Changing email...", Toast.LENGTH_SHORT).show();
                     if (SignInActivity.loggedInWithEmail) {
                         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
@@ -225,7 +210,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
+                                        if (task.isSuccessful())
+                                        {
                                             currentUser.updateEmail(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -288,75 +274,81 @@ public class AccountSettingsActivity extends AppCompatActivity {
         textViewChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 newPassword = editTextPassword.getText().toString();
 
-                if (!newPassword.equals(password)) {
+                Toast.makeText(context, "Changing password...", Toast.LENGTH_SHORT).show();
+                if (SignInActivity.loggedInWithEmail) {
+                    AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
-                    Toast.makeText(context, "Changing password...", Toast.LENGTH_SHORT).show();
-                    if (SignInActivity.loggedInWithEmail) {
-                        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
-
-                        currentUser.reauthenticate(credential)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
+                    currentUser.reauthenticate(credential)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful())
+                                    {
+                                        if (newPassword.length() > 0)
+                                        {
                                             currentUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        UserAccess.changeField(username, "password", newPassword, new UserAccess.ChangeFieldCallback() {
+                                                    if (task.isSuccessful())
+                                                    {
+                                                        Toast.makeText(context, "Password changed. Sending verification mail.", Toast.LENGTH_SHORT).show();
+                                                        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
-                                                            public void onCallback(int status) {
-                                                                if (status == UserAccess.Constants.STATUS_OK) {
-                                                                    Toast.makeText(context, "Password changed.", Toast.LENGTH_SHORT).show();
-                                                                    password = newPassword;
-                                                                } else
-                                                                    Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful())
+                                                                    Toast.makeText(context, "Verification mail sent.", Toast.LENGTH_SHORT).show();
+                                                                else
+                                                                    Toast.makeText(context, "Error. Verification mail not sent.", Toast.LENGTH_SHORT).show();
                                                             }
                                                         });
-                                                    } else
+                                                    }
+                                                    else
                                                         Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-                                        } else
-                                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else {
-                        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
-                        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                                        }
+                                        else
+                                            Toast.makeText(context, "Password can't be empty.", Toast.LENGTH_SHORT).show();
+                                    } else
+                                        Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
+                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
-                        currentUser.reauthenticate(credential)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            currentUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        UserAccess.changeField(username, "password", newPassword, new UserAccess.ChangeFieldCallback() {
-                                                            @Override
-                                                            public void onCallback(int status) {
-                                                                if (status == UserAccess.Constants.STATUS_OK) {
-                                                                    Toast.makeText(context, "Password changed.", Toast.LENGTH_SHORT).show();
-                                                                    password = newPassword;
-                                                                } else
-                                                                    Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        });
-                                                    } else
-                                                        Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
+                    currentUser.reauthenticate(credential)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        currentUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(context, "Password changed. Sending mail verification", Toast.LENGTH_SHORT).show();
+                                                    mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful())
+                                                                Toast.makeText(context, "Verification mail sent.", Toast.LENGTH_SHORT).show();
+                                                            else
+                                                                Toast.makeText(context, "Error. Verification mail not sent.", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
                                                 }
-                                            });
-                                        } else
-                                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
+                                                else
+                                                    Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } else
+                                        Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
-                else Toast.makeText(context, "New password equals old password", Toast.LENGTH_SHORT).show();
             }
         });
 

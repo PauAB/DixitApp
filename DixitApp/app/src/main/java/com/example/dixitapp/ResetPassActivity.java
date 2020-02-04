@@ -19,15 +19,18 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignInActivity extends AppCompatActivity {
+import org.w3c.dom.Text;
 
-    FirebaseAuth mAuth;
+public class ResetPassActivity extends AppCompatActivity {
 
     private Globals globals;
+
+    private FirebaseAuth mAuth;
+
+    private Context context;
 
     private Guideline guidelineVerStart;
     private Guideline guidelineVerEnd;
@@ -39,15 +42,12 @@ public class SignInActivity extends AppCompatActivity {
     static final float START_HOR_POS = 0f;
     static final float END_HOR_POS = 1f;
 
-    private ImageView imageViewGoogleSignIn;
-    private ImageView imageViewPhoneSignIn;
-    private TextView textViewEmailBackground;
-    private TextView textViewPasswordBackground;
+    private ImageView imageViewBack;
+    private TextView textViewEmail;
+    private TextView textViewPassword;
+    private TextView textViewConfirm;
     private EditText editTextEmail;
     private EditText editTextPassword;
-    private TextView textViewLogIn;
-    private TextView textViewCreateAcc;
-    private TextView textViewResetPass;
 
     // ANIM VIEWS ----------------------------------------------
     private ImageView imageViewBaseball;
@@ -61,16 +61,12 @@ public class SignInActivity extends AppCompatActivity {
     // ---------------------------------------------------------
 
     private String email;
-    private String password;
-
-    static boolean loggedInWithEmail = true;
-
-    Context context;
+    private String newPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_reset_pass);
 
         try
         {
@@ -80,9 +76,11 @@ public class SignInActivity extends AppCompatActivity {
 
         globals = (Globals)getApplication();
 
+        mAuth = FirebaseAuth.getInstance();
+
         context = getApplicationContext();
 
-        mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
 
         guidelineVerStart = findViewById(R.id.guidelineVerStart);
         guidelineVerEnd = findViewById(R.id.guidelineVerEnd);
@@ -93,16 +91,6 @@ public class SignInActivity extends AppCompatActivity {
         guidelineVerEnd.setGuidelinePercent(END_VER_POS);
         guidelineHorStart.setGuidelinePercent(START_HOR_POS);
         guidelineHorEnd.setGuidelinePercent(END_HOR_POS);
-
-        imageViewGoogleSignIn = findViewById(R.id.imageViewGoogleSignIn);
-        imageViewPhoneSignIn = findViewById(R.id.imageViewPhoneSignIn);
-        textViewEmailBackground = findViewById(R.id.textViewEmailBackground);
-        textViewPasswordBackground = findViewById(R.id.textViewPasswordBackground);
-        editTextEmail = findViewById(R.id.editTextEmail);
-        editTextPassword = findViewById(R.id.editTextPassword);
-        textViewLogIn = findViewById(R.id.textViewLogIn);
-        textViewCreateAcc = findViewById(R.id.textViewCreateAcc);
-        textViewResetPass = findViewById(R.id.textViewResetPass);
 
         // GET & SET ANIM DEFAULTS ---------------------------------------------------
         imageViewBaseball = findViewById(R.id.imageViewBaseball);
@@ -134,33 +122,12 @@ public class SignInActivity extends AppCompatActivity {
 
         DisplaySeparatorAnim();
 
-        imageViewGoogleSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loggedInWithEmail = false;
-
-                Intent intent = new Intent(SignInActivity.this, SignInGoogleActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        imageViewPhoneSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loggedInWithEmail = false;
-
-                Intent intent = new Intent(SignInActivity.this, CreatePhoneAccActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        textViewResetPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SignInActivity.this, ResetPassActivity.class);
-                startActivity(intent);
-            }
-        });
+        imageViewBack = findViewById(R.id.imageViewBack);
+        textViewEmail = findViewById(R.id.textViewEmail);
+        textViewPassword = findViewById(R.id.textViewPassword);
+        textViewConfirm = findViewById(R.id.textViewConfirm);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
 
         editTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -170,9 +137,8 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (textViewEmailBackground.getVisibility() == View.VISIBLE) textViewEmailBackground.setVisibility(View.INVISIBLE);
-                else if (textViewEmailBackground.getVisibility() == View.INVISIBLE && s.length() == 0) textViewEmailBackground.setVisibility(View.VISIBLE);
-
+                if (textViewEmail.getVisibility() == View.VISIBLE) textViewEmail.setVisibility(View.INVISIBLE);
+                else if (textViewEmail.getVisibility() == View.INVISIBLE && s.length() == 0) textViewEmail.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -189,58 +155,60 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (textViewPasswordBackground.getVisibility() == View.VISIBLE) textViewPasswordBackground.setVisibility(View.INVISIBLE);
-                else if (textViewPasswordBackground.getVisibility() == View.INVISIBLE && s.length() == 0) textViewPasswordBackground.setVisibility(View.VISIBLE);
+                if (textViewPassword.getVisibility() == View.VISIBLE) textViewPassword.setVisibility(View.INVISIBLE);
+                else if (textViewPassword.getVisibility() == View.INVISIBLE && s.length() == 0) textViewPassword.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                newPassword = editTextPassword.getText().toString();
+
+                globals.setPassword(newPassword);
             }
         });
 
-        textViewLogIn.setOnClickListener(new View.OnClickListener() {
+        textViewConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loggedInWithEmail = true;
+                Toast.makeText(context, "Changing password...", Toast.LENGTH_SHORT).show();
 
-                password = editTextPassword.getText().toString();
-                globals.setPassword(password);
-
-                Toast.makeText(context, "Logging In...", Toast.LENGTH_SHORT).show();
-
-                if (password != null && email != null)
+                if (newPassword.length() > 0)
                 {
-                    mAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful())
-                                    {
-                                        mAuth.getCurrentUser().reload();
+                    mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                            {
+                                Toast.makeText(context, "Verification mail sent.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(ResetPassActivity.this, SignInActivity.class);
+                                startActivity(intent);
+                            }
+                            else
+                                Toast.makeText(context, "Error. Verification mail not sent.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                                        if (mAuth.getCurrentUser().isEmailVerified())
-                                        {
-                                            Intent intent = new Intent(SignInActivity.this, AppActivity.class);
-                                            startActivity(intent);
-                                        }
-                                        else
-                                        {
-                                            Intent intent = new Intent(SignInActivity.this, EmailVerificationActivity.class);
-                                            startActivity(intent);
-                                        }
-                                    }
-                                    else Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                    /*currentUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                            {
+                                Toast.makeText(context, "Password changed. Sending verification mail.", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                                Toast.makeText(context, "Password change failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    });*/
                 }
-                else Toast.makeText(context, "Please, complete all the fields", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, "Password can't be empty.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        textViewCreateAcc.setOnClickListener(new View.OnClickListener() {
+        imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignInActivity.this, CreateAccActivity.class);
+                Intent intent = new Intent(ResetPassActivity.this, SignInActivity.class);
                 startActivity(intent);
             }
         });

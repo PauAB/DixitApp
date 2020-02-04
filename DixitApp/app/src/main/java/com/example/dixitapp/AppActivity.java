@@ -1,24 +1,17 @@
 package com.example.dixitapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Guideline;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -45,17 +38,6 @@ public class AppActivity extends AppCompatActivity {
     private TextView textViewAccName;
     private ImageView imageViewUser;
     private ImageView imageViewUserMenu;
-
-    // VERIFY EMAIL VIEWS ------------------------------
-    /*
-    private ImageView imageViewVerifyBackground;
-    private ImageView imageViewVerifyBorder;
-    private ImageView imageViewVerifyRedBackground;
-    private TextView textViewVerifyMsg1;
-    private TextView textViewVerifySend;
-    private TextView textViewVerifyConfirm;
-    */
-    // -------------------------------------------------
 
     // SEPARATOR ANIM VIEWS ----------------------------------------------
     private ImageView imageViewBaseball;
@@ -105,26 +87,6 @@ public class AppActivity extends AppCompatActivity {
         guidelineAccMenuEnd.setGuidelinePercent(END_ACC_MENU_POS);
         // -------------------------------------------------------------------
 
-        // GET & SET VERIFY MSG DEFAULTS -------------------------------------
-        /*
-        imageViewVerifyBackground = findViewById(R.id.imageViewVerifyBackground);
-        imageViewVerifyBorder = findViewById(R.id.imageViewVerifyBorder);
-        imageViewVerifyRedBackground = findViewById(R.id.imageViewVerifyRedBackground);
-        textViewVerifyMsg1 = findViewById(R.id.textViewVerifyMsg1);
-        textViewVerifySend = findViewById(R.id.textViewVerifySend);
-        textViewVerifyConfirm = findViewById(R.id.textViewVerifyConfirm);
-
-        imageViewVerifyBackground.setAlpha(0.f);
-        imageViewVerifyBorder.setScaleX(0.f);
-        imageViewVerifyBorder.setScaleY(0.f);
-        imageViewVerifyRedBackground.setScaleX(0.f);
-        imageViewVerifyRedBackground.setScaleY(0.f);
-        textViewVerifyMsg1.setAlpha(0.f);
-        textViewVerifySend.setAlpha(0.f);
-        textViewVerifyConfirm.setAlpha(0.f);
-        */
-        // -------------------------------------------------------------------
-
         // GET & SET SEPARATOR ANIM DEFAULTS ---------------------------------------------------
         imageViewBaseball = findViewById(R.id.imageViewBaseball);
         imageViewBasketball = findViewById(R.id.imageViewBasketball);
@@ -162,12 +124,6 @@ public class AppActivity extends AppCompatActivity {
         imageViewUserMenu = findViewById(R.id.imageViewUserMenu);
 
         user.reload();
-/*
-        if(!user.isEmailVerified())
-        {
-            DisplayFadeVerifyAnim();
-        }
- */
 
         username = user.getEmail().split("@")[0];
 
@@ -229,24 +185,7 @@ public class AppActivity extends AppCompatActivity {
                 }
             }
         });
-/*
-        textViewVerifySend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendEmail();
-            }
-        });
 
-        textViewVerifyConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                user.reload();
-
-                if (user.isEmailVerified()) UndisplayVerifyMsgAnim();
-                else Toast.makeText(context, "Email not verified yet.", Toast.LENGTH_SHORT).show();
-            }
-        });
- */
         textViewAccSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -267,168 +206,7 @@ public class AppActivity extends AppCompatActivity {
             }
         });
     }
-/*
-    private void SendEmail()
-    {
-        if (user != null)
-        {
-            user.sendEmailVerification()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) Toast.makeText(context, "Email sent.", Toast.LENGTH_SHORT).show();
-                            else Toast.makeText(context, "Error. Email could not be sent.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
-        else Toast.makeText(context, "Error. User not found", Toast.LENGTH_SHORT).show();
-    }
- */
-/*
-    private void DisplayFadeVerifyAnim()
-    {
-        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 0.7f);
 
-        valueAnimator.setDuration(300);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.start();
-
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-                imageViewVerifyBackground.setAlpha(0.f + (Float) valueAnimator.getAnimatedValue());
-            }
-        });
-
-        valueAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                DisplayVerifyBackgroundAnim();
-            }
-        });
-    }
-
-    private void DisplayVerifyBackgroundAnim()
-    {
-        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 1.f);
-
-        valueAnimator.setDuration(300);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.start();
-
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-                imageViewVerifyBorder.setScaleX(0.f + (Float) valueAnimator.getAnimatedValue());
-                imageViewVerifyBorder.setScaleY(0.f + (Float) valueAnimator.getAnimatedValue());
-                imageViewVerifyRedBackground.setScaleX(0.f + (Float) valueAnimator.getAnimatedValue());
-                imageViewVerifyRedBackground.setScaleY(0.f + (Float) valueAnimator.getAnimatedValue());
-            }
-        });
-
-        valueAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                DisplayVerifyMsgAnim();
-            }
-        });
-    }
-
-    private void DisplayVerifyMsgAnim()
-    {
-        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 1.f);
-
-        valueAnimator.setDuration(300);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.start();
-
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-                textViewVerifyMsg1.setAlpha(0.f + (Float) valueAnimator.getAnimatedValue());
-                textViewVerifySend.setAlpha(0.f + (Float) valueAnimator.getAnimatedValue());
-                textViewVerifyConfirm.setAlpha(0.f + (Float) valueAnimator.getAnimatedValue());
-            }
-        });
-    }
-
-    private void UndisplayFadeVerifyBackgroundAnim()
-    {
-        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 0.7f);
-
-        valueAnimator.setDuration(300);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.start();
-
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-                imageViewVerifyBackground.setAlpha(0.7f - (Float) valueAnimator.getAnimatedValue());
-            }
-        });
-    }
-
-    private void UndisplayVerifyBackgroundAnim()
-    {
-        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 1.f);
-
-        valueAnimator.setDuration(300);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.start();
-
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-                imageViewVerifyBorder.setScaleX(1.f - (Float) valueAnimator.getAnimatedValue());
-                imageViewVerifyBorder.setScaleY(1.f - (Float) valueAnimator.getAnimatedValue());
-                imageViewVerifyRedBackground.setScaleX(1.f - (Float) valueAnimator.getAnimatedValue());
-                imageViewVerifyRedBackground.setScaleY(1.f - (Float) valueAnimator.getAnimatedValue());
-            }
-        });
-
-        valueAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                UndisplayFadeVerifyBackgroundAnim();
-            }
-        });
-    }
-
-    private void UndisplayVerifyMsgAnim()
-    {
-        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 1.f);
-
-        valueAnimator.setDuration(300);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.start();
-
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-                textViewVerifyMsg1.setAlpha(1.f - (Float) valueAnimator.getAnimatedValue());
-                textViewVerifySend.setAlpha(1.f - (Float) valueAnimator.getAnimatedValue());
-                textViewVerifyConfirm.setAlpha(1.f - (Float) valueAnimator.getAnimatedValue());
-            }
-        });
-
-        valueAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                UndisplayVerifyBackgroundAnim();
-            }
-        });
-    }
-*/
     private void DisplaySeparatorAnim()
     {
 
