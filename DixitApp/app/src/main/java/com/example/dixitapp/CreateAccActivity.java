@@ -412,7 +412,7 @@ public class CreateAccActivity extends AppCompatActivity {
                                                                                         }
                                                                                     });
                                                                                 } else {
-                                                                                    Toast.makeText(context, "Email already in use", Toast.LENGTH_SHORT).show();
+                                                                                    Toast.makeText(context, "Error. User creation failed.", Toast.LENGTH_SHORT).show();
                                                                                     Log.w("User", "Authentication failed.", task.getException());
                                                                                 }
                                                                             }

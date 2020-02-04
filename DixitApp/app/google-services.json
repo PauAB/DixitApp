@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "96220484609-c794104l7t2lmab30l8im2gqljr5sjkk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dixitapp",
+            "certificate_hash": "d6e92526d6a6d428c890bf47809f258ef28d822f"
+          }
+        },
+        {
           "client_id": "96220484609-147h8cqgm087hmaflm7fhm7r1nkvs4kh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.dixitapp",
             "certificate_hash": "ff2dbd56f895487d06483ab1eaf1fd04078f133c"
-          }
-        },
-        {
-          "client_id": "96220484609-bq16um39c991o30fn5st86plaln8nkth.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.dixitapp",
-            "certificate_hash": "d6e92526d6a6d428c890bf47809f258ef28d822f"
           }
         },
         {
