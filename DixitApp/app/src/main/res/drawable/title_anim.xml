@@ -1,0 +1,25 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@drawable/ic_hobbies_01" android:duration="75" />
+    <item android:drawable="@drawable/ic_hobbies_02" android:duration="75" />
+    <item android:drawable="@drawable/ic_hobbies_03" android:duration="75" />
+    <item android:drawable="@drawable/ic_hobbies_04" android:duration="75" />
+    <item android:drawable="@drawable/ic_hobbies_05" android:duration="75" />
+    <item android:drawable="@drawable/ic_hobbies_06" android:duration="75" />
+    <item android:drawable="@drawable/ic_hobbies_07" android:duration="75" />
+    <item android:drawable="@drawable/ic_hobbies_08" android:duration="75" />
+    <item android:drawable="@drawable/ic_hobbies_09" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_10" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_11" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_12" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_13" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_14" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_15" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_16" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_17" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_18" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_19" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_20" android:duration="50" />
+    <item android:drawable="@drawable/ic_hobbies_21" android:duration="50" />
+</animation-list>
+    

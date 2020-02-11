@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.Guideline;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -58,6 +59,9 @@ public class ResetPassActivity extends AppCompatActivity {
     private ImageView imageViewPoolball;
     private ImageView imageViewTennisball;
     private ImageView imageViewVolleyball;
+
+    private ImageView imageViewTitleAnim;
+    AnimationDrawable titleAnim;
     // ---------------------------------------------------------
 
     private String email;
@@ -118,6 +122,12 @@ public class ResetPassActivity extends AppCompatActivity {
         imageViewTennisball.setScaleY(0.f);
         imageViewVolleyball.setScaleX(0.f);
         imageViewVolleyball.setScaleY(0.f);
+
+        imageViewTitleAnim = findViewById(R.id.imageViewTitleAnim);
+        imageViewTitleAnim.setBackgroundResource(R.drawable.title_anim);
+
+        titleAnim = (AnimationDrawable) imageViewTitleAnim.getBackground();
+        titleAnim.start();
         // ---------------------------------------------------------------------------
 
         DisplaySeparatorAnim();

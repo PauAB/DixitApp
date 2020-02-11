@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.Guideline;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +22,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -58,6 +58,9 @@ public class SignInActivity extends AppCompatActivity {
     private ImageView imageViewPoolball;
     private ImageView imageViewTennisball;
     private ImageView imageViewVolleyball;
+
+    private ImageView imageViewTitleAnim;
+    AnimationDrawable titleAnim;
     // ---------------------------------------------------------
 
     private String email;
@@ -130,6 +133,12 @@ public class SignInActivity extends AppCompatActivity {
         imageViewTennisball.setScaleY(0.f);
         imageViewVolleyball.setScaleX(0.f);
         imageViewVolleyball.setScaleY(0.f);
+
+        imageViewTitleAnim = findViewById(R.id.imageViewTitleAnim);
+        imageViewTitleAnim.setBackgroundResource(R.drawable.title_anim);
+
+        titleAnim = (AnimationDrawable) imageViewTitleAnim.getBackground();
+        titleAnim.start();
         // ---------------------------------------------------------------------------
 
         DisplaySeparatorAnim();

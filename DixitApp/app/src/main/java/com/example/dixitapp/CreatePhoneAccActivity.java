@@ -7,8 +7,8 @@ import androidx.constraintlayout.widget.Guideline;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,7 +26,6 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
@@ -59,6 +58,9 @@ public class CreatePhoneAccActivity extends AppCompatActivity {
     private ImageView imageViewPoolball;
     private ImageView imageViewTennisball;
     private ImageView imageViewVolleyball;
+
+    private ImageView imageViewTitleAnim;
+    AnimationDrawable titleAnim;
     // ---------------------------------------------------------
 
     private ImageView imageViewBack;
@@ -131,6 +133,12 @@ public class CreatePhoneAccActivity extends AppCompatActivity {
         imageViewTennisball.setScaleY(0.f);
         imageViewVolleyball.setScaleX(0.f);
         imageViewVolleyball.setScaleY(0.f);
+
+        imageViewTitleAnim = findViewById(R.id.imageViewTitleAnim);
+        imageViewTitleAnim.setBackgroundResource(R.drawable.title_anim);
+
+        titleAnim = (AnimationDrawable) imageViewTitleAnim.getBackground();
+        titleAnim.start();
         // ---------------------------------------------------------------------------
 
         DisplaySeparatorAnim();
@@ -198,7 +206,7 @@ public class CreatePhoneAccActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PhoneNumberVerification();
-                VerifyPhoneNumberWithCode(mVerificationId, );
+                //VerifyPhoneNumberWithCode(mVerificationId, );
             }
         });
 

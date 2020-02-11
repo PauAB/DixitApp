@@ -9,6 +9,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -64,6 +65,9 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private TextView textViewDeleteConfirm;
     private EditText editTextDeletePass;
     private ImageView imageViewDeleteBack;
+
+    private ImageView imageViewTitleAnim;
+    AnimationDrawable titleAnim;
     // ----------------------------------
 
     // SEPARATOR ANIM VIEWS ---------------------
@@ -131,6 +135,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
         textViewDeleteConfirm = findViewById(R.id.textViewDeleteConfirm);
         editTextDeletePass = findViewById(R.id.editTextDeletePass);
         imageViewDeleteBack = findViewById(R.id.imageViewDeleteBack);
+
+        imageViewTitleAnim = findViewById(R.id.imageViewTitleAnim);
         // -----------------------------------------------------------
 
         // ANIM DEFAULTS -----------------------------------------------------
@@ -154,6 +160,11 @@ public class AccountSettingsActivity extends AppCompatActivity {
         imageViewDeleteBack.setScaleX(0.f);
         imageViewDeleteBack.setScaleY(0.f);
         imageViewDeleteBack.setAlpha(0.f);
+
+        imageViewTitleAnim.setBackgroundResource(R.drawable.title_anim);
+
+        titleAnim = (AnimationDrawable) imageViewTitleAnim.getBackground();
+        titleAnim.start();
         // -------------------------------------------------------------------
 
         // GET & SET SEPARATOR ANIM DEFAULTS ---------------------------------

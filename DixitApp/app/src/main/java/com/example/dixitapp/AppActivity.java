@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.Guideline;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -38,6 +39,11 @@ public class AppActivity extends AppCompatActivity {
     private TextView textViewAccName;
     private ImageView imageViewUser;
     private ImageView imageViewUserMenu;
+
+    // ANIM VIEWS --------------------------------
+    private ImageView imageViewTitleAnim;
+    AnimationDrawable titleAnim;
+    // -------------------------------------------
 
     // SEPARATOR ANIM VIEWS ----------------------------------------------
     private ImageView imageViewBaseball;
@@ -114,6 +120,12 @@ public class AppActivity extends AppCompatActivity {
         imageViewVolleyball.setScaleX(0.f);
         imageViewVolleyball.setScaleY(0.f);
         // ---------------------------------------------------------------------------
+
+        imageViewTitleAnim = findViewById(R.id.imageViewTitleAnim);
+        imageViewTitleAnim.setBackgroundResource(R.drawable.title_anim);
+
+        titleAnim = (AnimationDrawable) imageViewTitleAnim.getBackground();
+        titleAnim.start();
 
         DisplaySeparatorAnim();
 

@@ -63,6 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:alpha="0"
         android:text="HOBBIES"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/blueFonts"
@@ -230,4 +231,15 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+    <ImageView
+        android:id="@+id/imageViewTitleAnim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_hobbies_01"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineContentEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineContentStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineVerStart"
+        app:srcCompat="@android:color/transparent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
