@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -138,10 +139,8 @@ public class SignInActivity extends AppCompatActivity {
         imageViewTitleAnim.setBackgroundResource(R.drawable.title_anim);
 
         titleAnim = (AnimationDrawable) imageViewTitleAnim.getBackground();
-        titleAnim.start();
         // ---------------------------------------------------------------------------
 
-        DisplaySeparatorAnim();
 
         imageViewGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +149,7 @@ public class SignInActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(SignInActivity.this, SignInGoogleActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -160,6 +160,7 @@ public class SignInActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(SignInActivity.this, CreatePhoneAccActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -168,6 +169,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SignInActivity.this, ResetPassActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -231,11 +233,13 @@ public class SignInActivity extends AppCompatActivity {
                                         {
                                             Intent intent = new Intent(SignInActivity.this, AppActivity.class);
                                             startActivity(intent);
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                         }
                                         else
                                         {
                                             Intent intent = new Intent(SignInActivity.this, EmailVerificationActivity.class);
                                             startActivity(intent);
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                         }
                                     }
                                     else Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -251,13 +255,13 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SignInActivity.this, CreateAccActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left); // Swipe to left (new activity coming from right)
             }
         });
     }
 
     private void DisplaySeparatorAnim()
     {
-
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 1.f);
 
         valueAnimator.setDuration(90);

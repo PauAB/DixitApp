@@ -152,6 +152,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                         Toast.makeText(context, "Email verified", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(EmailVerificationActivity.this, AppActivity.class);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     }
                     else
                         Toast.makeText(context, "Please verify your email first", Toast.LENGTH_SHORT).show();
@@ -167,6 +168,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(EmailVerificationActivity.this, CreateAccActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
     }
@@ -190,6 +192,12 @@ public class EmailVerificationActivity extends AppCompatActivity {
                     });
         }
         else Toast.makeText(context, "Error. User not found", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
     private void DisplaySeparatorAnim()

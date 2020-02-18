@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,8 +30,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.util.regex.Pattern;
 
 public class CreateAccActivity extends AppCompatActivity {
 
@@ -416,6 +413,7 @@ public class CreateAccActivity extends AppCompatActivity {
 
                                                                                                 Intent intent = new Intent(CreateAccActivity.this, EmailVerificationActivity.class);
                                                                                                 startActivity(intent);
+                                                                                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                                                                             } else if (status == UserAccess.Constants.STATUS_KO) {
                                                                                                 Toast.makeText(context, "Error. User creation failed.", Toast.LENGTH_SHORT).show();
                                                                                             }
@@ -438,6 +436,7 @@ public class CreateAccActivity extends AppCompatActivity {
 
                                                                             Intent intent = new Intent(CreateAccActivity.this, EmailVerificationActivity.class);
                                                                             startActivity(intent);
+                                                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                                                         } else if (status == UserAccess.Constants.STATUS_KO) {
                                                                             Toast.makeText(context, "Error. User creation failed.", Toast.LENGTH_SHORT).show();
                                                                         }
@@ -472,8 +471,15 @@ public class CreateAccActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(CreateAccActivity.this, SignInActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right); // Swipe to right (new activity coming from left)
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     private void calculatePasswordStrength(String str)

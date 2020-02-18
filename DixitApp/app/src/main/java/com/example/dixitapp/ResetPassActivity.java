@@ -192,6 +192,7 @@ public class ResetPassActivity extends AppCompatActivity {
                                 Toast.makeText(context, "Verification mail sent.", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(ResetPassActivity.this, SignInActivity.class);
                                 startActivity(intent);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             }
                             else
                                 Toast.makeText(context, "Error. Verification mail not sent.", Toast.LENGTH_SHORT).show();
@@ -220,8 +221,15 @@ public class ResetPassActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ResetPassActivity.this, SignInActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     private void DisplaySeparatorAnim()

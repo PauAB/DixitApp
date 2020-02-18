@@ -203,6 +203,7 @@ public class AppActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(AppActivity.this, AccountSettingsActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -215,8 +216,15 @@ public class AppActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(AppActivity.this, SignInGoogleActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     private void DisplaySeparatorAnim()
