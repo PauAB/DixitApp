@@ -17,9 +17,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class MainActivity extends AppCompatActivity {
 
+public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private Globals globals;
 
     Context context;
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         catch (NullPointerException e){}
 
         context = getApplicationContext();
-
+        globals = (Globals)getApplication();
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart()
     {
         super.onStart();
+
+        globals.setAnimDelay(800);
 
         final FirebaseUser user = mAuth.getCurrentUser();
 

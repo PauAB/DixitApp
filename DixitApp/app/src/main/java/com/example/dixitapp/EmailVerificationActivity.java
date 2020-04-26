@@ -26,6 +26,8 @@ public class EmailVerificationActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
 
+    private Globals globals;
+
     private Guideline guidelineVerStart;
     private Guideline guidelineVerEnd;
     private Guideline guidelineHorStart;
@@ -71,6 +73,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
         catch (NullPointerException e){}
 
         context = getApplicationContext();
+        globals = (Globals)getApplication();
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -206,7 +209,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 1.f);
 
         valueAnimator.setDuration(90);
-        valueAnimator.setStartDelay(500);
+        valueAnimator.setStartDelay(globals.getAnimDelay());
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator.start();
 

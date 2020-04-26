@@ -234,11 +234,10 @@ public class ResetPassActivity extends AppCompatActivity {
 
     private void DisplaySeparatorAnim()
     {
-
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 1.f);
 
         valueAnimator.setDuration(90);
-        valueAnimator.setStartDelay(500);
+        valueAnimator.setStartDelay(globals.getAnimDelay());
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator.start();
 

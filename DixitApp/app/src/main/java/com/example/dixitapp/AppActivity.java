@@ -22,6 +22,8 @@ public class AppActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser user;
 
+    private Globals globals;
+
     private Guideline guidelineVerStart;
     private Guideline guidelineVerEnd;
     private Guideline guidelineHorStart;
@@ -75,6 +77,7 @@ public class AppActivity extends AppCompatActivity {
         catch (NullPointerException e){}
 
         context = getApplicationContext();
+        globals = (Globals)getApplication();
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -229,11 +232,10 @@ public class AppActivity extends AppCompatActivity {
 
     private void DisplaySeparatorAnim()
     {
-
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.f, 1.f);
 
         valueAnimator.setDuration(90);
-        valueAnimator.setStartDelay(500);
+        valueAnimator.setStartDelay(globals.getAnimDelay());
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator.start();
 
