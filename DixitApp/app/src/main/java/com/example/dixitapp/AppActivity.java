@@ -8,16 +8,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
-public class AppActivity extends AppCompatActivity {
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AppActivity extends AppCompatActivity implements ContentFragment.OnListFragmentInteractionListener {
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -63,6 +69,9 @@ public class AppActivity extends AppCompatActivity {
     private String username;
     private boolean accMenuDisplayed = false;
 
+    private List<InterestEntity> interestList;
+
+    InterestViewModel interestViewModel;
     Context context;
 
     @Override
@@ -81,6 +90,8 @@ public class AppActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
+        interestViewModel = new InterestViewModel(getApplication());
 
         // GET & SET GUIDELINES DEFAULTS -------------------------------------
         guidelineVerStart = findViewById(R.id.guidelineVerStart);
@@ -156,6 +167,21 @@ public class AppActivity extends AppCompatActivity {
 
         Picasso.get().load(image).into(imageViewUserMenu);
         Picasso.get().load(image).transform(new CircleTransform()).into(imageViewUserMenu);
+
+        try
+        {
+            InputStream is = getAssets().open("interests.json");
+            JsonInterestParser jsonInterestParser = new JsonInterestParser();
+            interestList = jsonInterestParser.readJsonStream(is);
+        } catch (Exception e)
+        {
+            interestList = new ArrayList<>();
+        }
+
+        for (InterestEntity interest : interestList)
+        {
+            interestViewModel.insertInterest(interest);
+        }
 
         imageViewUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,5 +287,10 @@ public class AppActivity extends AppCompatActivity {
                 imageViewVolleyball.setScaleY(0.f + (Float) valueAnimator.getAnimatedValue());
             }
         });
+    }
+
+    @Override
+    public void onListFragmentInteraction(InterestEntity item) {
+
     }
 }
