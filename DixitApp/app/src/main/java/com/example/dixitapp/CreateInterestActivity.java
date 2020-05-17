@@ -10,8 +10,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class CreateInterestActivity extends AppCompatActivity {
+
+    FirebaseAuth mAuth;
+    FirebaseUser user;
 
     private Globals globals;
 
@@ -42,6 +49,10 @@ public class CreateInterestActivity extends AppCompatActivity {
     // ---------------------------------------------------------
 
     private ImageView imageViewBack;
+    private TextView textViewCreateInterest;
+
+    private String username;
+    private String defaultImage = "https://www.voanews.com/themes/custom/voa/images/Author__Placeholder.png";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +66,9 @@ public class CreateInterestActivity extends AppCompatActivity {
         catch (NullPointerException e){}
 
         globals = (Globals)getApplication();
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
 
         // GET & SET GUIDELINES DEFAULTS -------------------------------------
         guidelineVerStart = findViewById(R.id.guidelineVerStart);
@@ -105,13 +119,23 @@ public class CreateInterestActivity extends AppCompatActivity {
         DisplaySeparatorAnim();
 
         imageViewBack = findViewById(R.id.imageViewBack);
+        textViewCreateInterest = findViewById(R.id.textViewCreateInterest);
+
+        username = user.getEmail().split("@")[0];
 
         imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateInterestActivity.this, AppActivity.class);
+                Intent intent = new Intent(CreateInterestActivity.this, UserProfile.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
+
+        textViewCreateInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Interest newInterest = new Interest(user.getUid().toString(), user.getPhotoUrl().toString(), user.);
             }
         });
     }

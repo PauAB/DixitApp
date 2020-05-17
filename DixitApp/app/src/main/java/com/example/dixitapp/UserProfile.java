@@ -8,6 +8,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -27,6 +28,7 @@ public class UserProfile extends AppCompatActivity {
     // -------------------------------------------
 
     private ImageView imageViewBack;
+    private TextView textViewCreateInterest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class UserProfile extends AppCompatActivity {
         titleAnim.start();
 
         imageViewBack = findViewById(R.id.imageViewBack);
+        textViewCreateInterest = findViewById(R.id.textViewCreateInterest);
 
         imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +68,15 @@ public class UserProfile extends AppCompatActivity {
                 Intent intent = new Intent(UserProfile.this, AppActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
+
+        textViewCreateInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfile.this, CreateInterestActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }

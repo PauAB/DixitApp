@@ -45,6 +45,7 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
     private TextView textViewAccSettings;
     private TextView textViewAccName;
     private TextView textViewInterests;
+    private TextView textViewCreateInterest;
     private ImageView imageViewUser;
     private ImageView imageViewUserProfile;
 
@@ -147,6 +148,7 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
         textViewAccSettings = findViewById(R.id.textViewAccSettings);
         textViewAccName = findViewById(R.id.textViewAccName);
         textViewInterests = findViewById(R.id.textViewInterests);
+        textViewCreateInterest = findViewById(R.id.textViewCreateInterest);
         imageViewUser = findViewById(R.id.imageViewUser);
         imageViewUserProfile = findViewById(R.id.imageViewUserProfile);
 
@@ -263,6 +265,15 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AppActivity.this, UserProfile.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+
+        textViewCreateInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AppActivity.this, CreateInterestActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }

@@ -104,6 +104,7 @@
         android:id="@+id/imageViewBaseball"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginStart="54dp"
         app:layout_constraintBottom_toTopOf="@+id/guidelineHeaderEnd"
         app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
         app:layout_constraintTop_toBottomOf="@+id/imageViewTitleAnim"
@@ -143,6 +144,7 @@
         android:id="@+id/imageViewVolleyball"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="54dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewCricketball"
         app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
         app:layout_constraintTop_toTopOf="@+id/imageViewCricketball"
@@ -177,4 +179,65 @@
         app:layout_constraintEnd_toStartOf="@+id/imageViewPoolball"
         app:layout_constraintTop_toTopOf="@+id/imageViewPoolball"
         app:srcCompat="@drawable/ic_iconfinder_football_1271425" />
+
+    <TextView
+        android:id="@+id/textViewCategoryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Category"
+        android:textColor="@color/blueFonts"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHeaderEnd" />
+
+    <EditText
+        android:id="@+id/editTextCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Category"
+        android:textColor="@color/blueLinks"
+        app:layout_constraintStart_toStartOf="@+id/textViewCategoryTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCategoryTitle" />
+
+    <TextView
+        android:id="@+id/textViewTextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Text"
+        android:textColor="@color/blueFonts"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCategory" />
+
+    <EditText
+        android:id="@+id/editTextContentText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:textColor="@color/blueLinks"
+        app:layout_constraintStart_toStartOf="@+id/textViewTextTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTextTitle" />
+
+    <TextView
+        android:id="@+id/textViewCreateInterest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="Create"
+        android:textColor="@color/blueLinks"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineVerEnd"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintTop_toTopOf="@+id/guidelineFooterStart" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
