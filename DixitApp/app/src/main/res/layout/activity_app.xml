@@ -195,7 +195,7 @@
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <ImageView
-        android:id="@+id/imageViewUserMenu"
+        android:id="@+id/imageViewUserProfile"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
@@ -217,16 +217,28 @@
         app:layout_constraintTop_toTopOf="@+id/guidelineTitleHeight" />
 
     <TextView
+        android:id="@+id/textViewInterests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Interests"
+        android:textColor="@color/blueLinks"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineAccMenuEnd"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAccSettings" />
+
+    <TextView
         android:id="@+id/textViewLogOutApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="Log Out"
         android:textColor="@color/blueLinks"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/guidelineAccMenuEnd"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAccSettings" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewInterests" />
 
     <TextView
         android:id="@+id/textViewAccName"
@@ -236,8 +248,8 @@
         android:textColor="@color/blueLinks"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/guidelineTitleHeight"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewUserMenu"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewUserMenu" />
+        app:layout_constraintEnd_toEndOf="@+id/imageViewUserProfile"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewUserProfile" />
 
     <ImageView
         android:id="@+id/imageViewTitleAnim"
@@ -259,5 +271,34 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
         app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
         app:layout_constraintTop_toTopOf="@+id/guidelineTitleHeight" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineFooterStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="50dp" />
+
+    <ImageView
+        android:id="@+id/imageViewFooter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineVerEnd"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineFooterStart"
+        app:srcCompat="@color/blueBackgroundContent" />
+
+    <TextView
+        android:id="@+id/textViewCreateInterest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="New"
+        android:textColor="@color/blueLinks"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineVerEnd"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintTop_toTopOf="@+id/guidelineFooterStart" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

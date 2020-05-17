@@ -12,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_hobbies_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreatePhoneAccActivity"></activity>
+        <activity android:name=".CreateInterestActivity"></activity>
+        <activity android:name=".UserProfile" />
+        <activity android:name=".InterestsActivity" />
+        <activity android:name=".CreatePhoneAccActivity" />
         <activity android:name=".ResetPassActivity" />
         <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".EmailVerificationActivity" />

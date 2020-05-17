@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateInterestActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.99" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.99" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHeaderEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="100dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineFooterStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="50dp" />
+
+    <ImageView
+        android:id="@+id/imageViewBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.9"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineVerEnd"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineVerStart"
+        app:srcCompat="@color/blueBackgroundContent" />
+
+    <ImageView
+        android:id="@+id/imageViewHeaderBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHeaderEnd"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineVerStart"
+        app:srcCompat="@color/blueBackground" />
+
+    <ImageView
+        android:id="@+id/imageViewFooterBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineVerEnd"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineFooterStart"
+        app:srcCompat="@color/blueBackgroundContent" />
+
+    <ImageView
+        android:id="@+id/imageViewTitleAnim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_hobbies_01"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineVerStart"
+        app:srcCompat="@android:color/transparent" />
+
+    <ImageView
+        android:id="@+id/imageViewBack"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewTitleAnim"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBackground"
+        app:srcCompat="@drawable/ic_iconfinder_arrow_left_183252" />
+
+    <ImageView
+        android:id="@+id/imageViewBaseball"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHeaderEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewTitleAnim"
+        app:srcCompat="@drawable/ic_iconfinder_baseball_1271428" />
+
+    <ImageView
+        android:id="@+id/imageViewBasketball"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBaseball"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBaseball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBaseball"
+        app:srcCompat="@drawable/ic_iconfinder_basketball_1271432" />
+
+    <ImageView
+        android:id="@+id/imageViewBeachball"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBasketball"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBasketball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBasketball"
+        app:srcCompat="@drawable/ic_iconfinder_beachball_1271430" />
+
+    <ImageView
+        android:id="@+id/imageViewCricketball"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBeachball"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBeachball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBeachball"
+        app:srcCompat="@drawable/ic_iconfinder_cricket_1271429" />
+
+    <ImageView
+        android:id="@+id/imageViewVolleyball"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewCricketball"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintTop_toTopOf="@+id/imageViewCricketball"
+        app:srcCompat="@drawable/ic_iconfinder_volleyball_1271423" />
+
+    <ImageView
+        android:id="@+id/imageViewTennisball"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewVolleyball"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewVolleyball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewVolleyball"
+        app:srcCompat="@drawable/ic_iconfinder_tennis_1271424" />
+
+    <ImageView
+        android:id="@+id/imageViewPoolball"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewTennisball"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewTennisball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewTennisball"
+        app:srcCompat="@drawable/ic_iconfinder_pool_1271426" />
+
+    <ImageView
+        android:id="@+id/imageViewFootball"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewPoolball"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewPoolball"
+        app:layout_constraintTop_toTopOf="@+id/imageViewPoolball"
+        app:srcCompat="@drawable/ic_iconfinder_football_1271425" />
+</androidx.constraintlayout.widget.ConstraintLayout>

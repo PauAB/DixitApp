@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,6 @@ public class ContentFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            interestViewModel = new InterestViewModel(getActivity().getApplication());
             shootViewModel();
             interests = new ArrayList<>();
             myContentRecyclerViewAdapter = new MyContentRecyclerViewAdapter(interests, mListener, getContext());
@@ -84,11 +84,16 @@ public class ContentFragment extends Fragment {
 
     public void shootViewModel()
     {
-        final InterestViewModel interestViewModel = new InterestViewModel(getActivity().getApplication());
-
+        interestViewModel = new InterestViewModel(getActivity().getApplication());
         interestViewModel.getAllInterests().observe(getActivity(), new Observer<List<InterestEntity>>() {
             @Override
             public void onChanged(List<InterestEntity> interestEntities) {
+                /*for (InterestEntity interest : interestEntities)
+                {
+                    Log.i("OnChanged", "DateAndTime: " + interest.getDateAndTime());
+                    Log.i("OnChanged", "Category: " + interest.getCategory());
+                    Log.i("OnChanged", "Content: " + interest.getText());
+                }*/
                 myContentRecyclerViewAdapter.setNewInterests(interestEntities);
             }
         });

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
@@ -45,8 +44,9 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
     private TextView textViewLogOutApp;
     private TextView textViewAccSettings;
     private TextView textViewAccName;
+    private TextView textViewInterests;
     private ImageView imageViewUser;
-    private ImageView imageViewUserMenu;
+    private ImageView imageViewUserProfile;
 
     // ANIM VIEWS --------------------------------
     private ImageView imageViewTitleAnim;
@@ -146,8 +146,9 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
         textViewLogOutApp = findViewById(R.id.textViewLogOutApp);
         textViewAccSettings = findViewById(R.id.textViewAccSettings);
         textViewAccName = findViewById(R.id.textViewAccName);
+        textViewInterests = findViewById(R.id.textViewInterests);
         imageViewUser = findViewById(R.id.imageViewUser);
-        imageViewUserMenu = findViewById(R.id.imageViewUserMenu);
+        imageViewUserProfile = findViewById(R.id.imageViewUserProfile);
 
         user.reload();
 
@@ -165,8 +166,8 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
         Picasso.get().load(image).into(imageViewUser);
         Picasso.get().load(image).transform(new CircleTransform()).into(imageViewUser);
 
-        Picasso.get().load(image).into(imageViewUserMenu);
-        Picasso.get().load(image).transform(new CircleTransform()).into(imageViewUserMenu);
+        Picasso.get().load(image).into(imageViewUserProfile);
+        Picasso.get().load(image).transform(new CircleTransform()).into(imageViewUserProfile);
 
         try
         {
@@ -246,6 +247,24 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
                 Intent intent = new Intent(AppActivity.this, SignInGoogleActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
+
+        textViewInterests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AppActivity.this, InterestsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+
+        imageViewUserProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AppActivity.this, UserProfile.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }

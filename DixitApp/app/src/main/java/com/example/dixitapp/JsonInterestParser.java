@@ -41,9 +41,9 @@ public class JsonInterestParser {
         Integer id = 0;
         String image = "";
         String username = "";
+        String dateAndTime = "";
         String category = "";
         String text = "";
-        String dateAndTime = "";
 
         Integer counter = 0;
 

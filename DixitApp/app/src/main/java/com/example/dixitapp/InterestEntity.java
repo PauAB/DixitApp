@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.security.cert.CertificateRevokedException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,9 +17,9 @@ public class InterestEntity {
 
     private String UserImage;
     private String Username;
+    private String DateAndTime;
     private String Category;
     private String Text;
-    private String DateAndTime;
     private int Counter;
 
     public InterestEntity() {

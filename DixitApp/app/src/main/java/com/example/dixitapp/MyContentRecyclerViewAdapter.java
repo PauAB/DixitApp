@@ -3,6 +3,7 @@ package com.example.dixitapp;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +46,10 @@ public class MyContentRecyclerViewAdapter extends RecyclerView.Adapter<MyContent
         Picasso.get().load(holder.mItem.getUserImage()).into(holder.imageViewProfilePic);
         Picasso.get().load(holder.mItem.getUserImage()).transform(new CircleTransform()).into(holder.imageViewProfilePic);
 
-        holder.textViewUsername.setText(holder.mItem.getUsername());
-        holder.textViewHour.setText(holder.mItem.getDateAndTime());
-        holder.textViewCategory.setText(holder.mItem.getCategory());
-        holder.textViewTextContent.setText(holder.mItem.getText());
+        /*holder.textViewUsername.setText(holder.mItem.getUsername());
+        holder.textViewCategory.setText(holder.mItem.getDateAndTime());
+        holder.textViewTextContent.setText(holder.mItem.getCategory());
+        holder.textViewHour.setText(holder.mItem.getText());*/
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
