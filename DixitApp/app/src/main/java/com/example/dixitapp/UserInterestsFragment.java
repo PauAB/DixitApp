@@ -13,10 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContentFragment extends Fragment {
+public class UserInterestsFragment extends Fragment {
 
 
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -24,13 +27,17 @@ public class ContentFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private List<Interest> interestsList;
+    private String username;
 
-    public ContentFragment() {
+    FirebaseAuth mAuth;
+    FirebaseUser user;
+
+    public UserInterestsFragment() {
     }
 
     @SuppressWarnings("unused")
-    public static ContentFragment newInstance(int columnCount) {
-        ContentFragment fragment = new ContentFragment();
+    public static UserInterestsFragment newInstance(int columnCount) {
+        UserInterestsFragment fragment = new UserInterestsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -46,12 +53,17 @@ public class ContentFragment extends Fragment {
         }
 
         interestsList = new ArrayList<>();
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        username = user.getEmail().split("@")[0];
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_content_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_interests_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -62,15 +74,24 @@ public class ContentFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            InterestAccess.getInterests(new InterestAccess.InterestsCallback() {
+            InterestAccess.getUserInterests(username, new InterestAccess.UserInterestsCallback() {
                 @Override
-                public void onCallback(List<Interest> interests, int status) {
+                public void onCallback(List<com.example.dixitapp.Interest> userInterests, int status) {
                     if (status == InterestAccess.Constants.STATUS_OK)
                     {
-                        interestsList = interests;
-                        MyContentRecyclerViewAdapter adapter = new MyContentRecyclerViewAdapter(interestsList, mListener, getContext());
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                        interestsList = userInterests;
+                        if (interestsList.size() > 0)
+                        {
+                            UserProfile.HideNoPublications();
+
+                            MyUserInterestsRecyclerViewAdapter adapter = new MyUserInterestsRecyclerViewAdapter(interestsList, mListener, getContext());
+                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
+                        else
+                        {
+                            UserProfile.ShowNoPublications();
+                        }
                     }
                     else if (status == InterestAccess.Constants.STATUS_KO)
                     {
@@ -100,6 +121,7 @@ public class ContentFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
         void onListFragmentInteraction(Interest item);
     }
 }

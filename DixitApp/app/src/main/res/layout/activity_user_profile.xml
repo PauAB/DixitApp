@@ -172,4 +172,14 @@
         app:layout_constraintStart_toEndOf="@+id/textViewMakeOne"
         app:srcCompat="@drawable/ic_arrow" />
 
+    <fragment
+        android:id="@+id/fragment"
+        class="com.example.dixitapp.UserInterestsFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineFooterStart"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHeaderEnd" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

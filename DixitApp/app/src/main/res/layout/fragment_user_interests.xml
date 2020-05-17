@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ConstraintLayout"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="246dp">
+    android:layout_height="246dp"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/imageViewBackground"
@@ -16,20 +17,6 @@
         app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
         app:layout_constraintTop_toTopOf="@+id/guidelineVerStart"
         app:srcCompat="@color/blueBackgroundContent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVerStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.01" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVerEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.99" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorStart"
@@ -46,18 +33,18 @@
         app:layout_constraintGuide_percent="0.99" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineContentEnd"
+        android:id="@+id/guidelineVerStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.01" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineHeaderEnd"
+        android:id="@+id/guidelineVerEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+        app:layout_constraintGuide_percent="0.99" />
 
     <ImageView
         android:id="@+id/imageViewProfilePic"
@@ -88,12 +75,18 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="Hour"
-        android:textAlignment="textEnd"
         android:textColor="@color/blueFonts"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewUsername"
         app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
         app:layout_constraintTop_toTopOf="@+id/textViewUsername" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHeaderEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
 
     <TextView
         android:id="@+id/textViewCategory"
@@ -102,23 +95,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Category"
-        android:textAlignment="textStart"
         android:textColor="@color/blueFonts"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
-        app:layout_constraintTop_toTopOf="@+id/guidelineHeaderEnd" />
-
-    <TextView
-        android:id="@+id/textViewCounter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="0"
-        android:textAlignment="textEnd"
-        android:textColor="@color/blueLinks"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewCategory"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewUser"
         app:layout_constraintTop_toTopOf="@+id/guidelineHeaderEnd" />
 
     <ImageView
@@ -126,9 +105,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewUser"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewCategory"
         app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
-        app:layout_constraintTop_toTopOf="@+id/imageViewUser"
+        app:layout_constraintTop_toTopOf="@+id/textViewCategory"
         app:srcCompat="@drawable/ic_iconfinder_plus" />
 
     <ImageView
@@ -136,32 +115,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewCounter"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewPlus"
         app:layout_constraintEnd_toStartOf="@+id/imageViewPlus"
-        app:layout_constraintTop_toTopOf="@+id/textViewCounter"
+        app:layout_constraintTop_toTopOf="@+id/imageViewPlus"
         app:srcCompat="@drawable/ic_iconfinder_user" />
+
+    <TextView
+        android:id="@+id/textViewCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="0"
+        android:textColor="@color/blueLinks"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewUser"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewUser"
+        app:layout_constraintTop_toTopOf="@+id/imageViewUser" />
 
     <TextView
         android:id="@+id/textViewTextContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:text="Text content"
-        android:textAlignment="textStart"
-        android:textColor="@color/blueLinks"
-        android:textSize="14sp"
+        android:text="Content"
         app:layout_constraintBottom_toTopOf="@+id/guidelineContentEnd"
         app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
         app:layout_constraintStart_toStartOf="@+id/textViewCategory"
         app:layout_constraintTop_toBottomOf="@+id/textViewCategory" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineContentEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
     <ImageView
         android:id="@+id/imageViewSeparationLine"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guidelineVerEnd"
         app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
         app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
         app:srcCompat="@drawable/ic_separation_line" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,33 +18,24 @@ public class Interest {
     public String Content;
     public int Counter;
 
-    public Interest(String ID, String userImage, String username, String dateAndTime, String category, String content, int counter) {
+    public Interest(String ID, String userImage, String username, String dateAndTime, String category, String content) {
         this.ID = ID;
         UserImage = userImage;
         Username = username;
         DateAndTime = dateAndTime;
         Category = category;
         Content = content;
-        Counter = counter;
-
-        SetDateAndTime();
         Counter = 0;
     }
 
-    public Interest(String ID, Map<String, Object> data) {
-        this.ID = ID;
+    public Interest(Map<String, Object> data) {
+        this.ID = data.get("id").toString();
         UserImage = data.get("image").toString();
         Username = data.get("username").toString();
         DateAndTime = data.get("dateAndTime").toString();
         Category = data.get("category").toString();
         Content = data.get("content").toString();
         Counter = (int)(long)data.get("counter");
-    }
-
-    private void SetDateAndTime()
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm '|' MM.dd.yyyy");
-        DateAndTime = sdf.format(new Date());
     }
 
     @Exclude

@@ -3,30 +3,29 @@ package com.example.dixitapp;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.dixitapp.ContentFragment.OnListFragmentInteractionListener;
+import com.example.dixitapp.UserInterestsFragment.OnListFragmentInteractionListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link InterestEntity} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Interest} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyContentRecyclerViewAdapter extends RecyclerView.Adapter<MyContentRecyclerViewAdapter.ViewHolder> {
+public class MyUserInterestsRecyclerViewAdapter extends RecyclerView.Adapter<MyUserInterestsRecyclerViewAdapter.ViewHolder> {
 
-    private List<Interest> mValues;
+    private final List<Interest> mValues;
     private final OnListFragmentInteractionListener mListener;
     private final Context mContext;
 
-    public MyContentRecyclerViewAdapter(List<Interest> items, OnListFragmentInteractionListener listener, Context context) {
+    public MyUserInterestsRecyclerViewAdapter(List<Interest> items, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
         mListener = listener;
         mContext = context;
@@ -35,7 +34,7 @@ public class MyContentRecyclerViewAdapter extends RecyclerView.Adapter<MyContent
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_content, parent, false);
+                .inflate(R.layout.fragment_user_interests, parent, false);
         return new ViewHolder(view);
     }
 
@@ -81,7 +80,6 @@ public class MyContentRecyclerViewAdapter extends RecyclerView.Adapter<MyContent
         public ViewHolder(View view) {
             super(view);
             mView = view;
-
             imageViewProfilePic = view.findViewById(R.id.imageViewProfilePic);
             imageViewSeparationLine = view.findViewById(R.id.imageViewSeparationLine);
             textViewUsername = view.findViewById(R.id.textViewUsername);

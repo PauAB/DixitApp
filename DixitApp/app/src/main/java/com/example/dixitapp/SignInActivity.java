@@ -41,7 +41,6 @@ public class SignInActivity extends AppCompatActivity {
     static final float END_HOR_POS = 1f;
 
     private ImageView imageViewGoogleSignIn;
-    //private ImageView imageViewPhoneSignIn;
     private TextView textViewEmailBackground;
     private TextView textViewPasswordBackground;
     private EditText editTextEmail;
@@ -99,7 +98,6 @@ public class SignInActivity extends AppCompatActivity {
         guidelineHorEnd.setGuidelinePercent(END_HOR_POS);
 
         imageViewGoogleSignIn = findViewById(R.id.imageViewGoogleSignIn);
-        //imageViewPhoneSignIn = findViewById(R.id.imageViewPhoneSignIn);
         textViewEmailBackground = findViewById(R.id.textViewEmailBackground);
         textViewPasswordBackground = findViewById(R.id.textViewPasswordBackground);
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -154,17 +152,6 @@ public class SignInActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
-
-        /*imageViewPhoneSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loggedInWithEmail = false;
-
-                Intent intent = new Intent(SignInActivity.this, CreatePhoneAccActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });*/
 
         textViewResetPass.setOnClickListener(new View.OnClickListener() {
             @Override

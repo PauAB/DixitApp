@@ -70,9 +70,7 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
     private String username;
     private boolean accMenuDisplayed = false;
 
-    private List<InterestEntity> interestList;
-
-    InterestViewModel interestViewModel;
+    private List<Interest> interestList;
     Context context;
 
     @Override
@@ -91,8 +89,6 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-
-        interestViewModel = new InterestViewModel(getApplication());
 
         // GET & SET GUIDELINES DEFAULTS -------------------------------------
         guidelineVerStart = findViewById(R.id.guidelineVerStart);
@@ -170,21 +166,6 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
 
         Picasso.get().load(image).into(imageViewUserProfile);
         Picasso.get().load(image).transform(new CircleTransform()).into(imageViewUserProfile);
-
-        try
-        {
-            InputStream is = getAssets().open("interests.json");
-            JsonInterestParser jsonInterestParser = new JsonInterestParser();
-            interestList = jsonInterestParser.readJsonStream(is);
-        } catch (Exception e)
-        {
-            interestList = new ArrayList<>();
-        }
-
-        for (InterestEntity interest : interestList)
-        {
-            interestViewModel.insertInterest(interest);
-        }
 
         imageViewUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,7 +301,7 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
     }
 
     @Override
-    public void onListFragmentInteraction(InterestEntity item) {
+    public void onListFragmentInteraction(Interest item) {
 
     }
 }

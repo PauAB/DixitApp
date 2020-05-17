@@ -4,24 +4,33 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 public class InterestAccess {
-    public static void createNewInterest(String ID, String image, String username, String dateAndTime, String category, String content, final CreateInterestCallback callback)
+    public static void createNewInterest(String image, String username, String category, String content, final CreateInterestCallback callback)
     {
-        FirebaseFirestore.getInstance().collection("interests").document(ID)
-                .set(new Interest(ID, image, username, dateAndTime, category, content, 0).toMap())
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm '|' MM.dd.yyyy");
+        String dateAndTime = sdf.format(new Date());
+
+        String id = username + "-" + dateAndTime;
+
+        FirebaseFirestore.getInstance().collection("interests").document(id)
+                .set(new Interest(id, image, username, dateAndTime, category, content).toMap())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -32,6 +41,52 @@ public class InterestAccess {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         callback.onCallback(Constants.STATUS_KO);
+                    }
+                });
+    }
+
+    public static void getInterest(String id, final InterestCallback callback)
+    {
+        FirebaseFirestore.getInstance().collection("interests")
+                .whereEqualTo("id", id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful())
+                        {
+                            if (task.getResult().getDocuments().size() > 0)
+                            {
+                                callback.onCallback(new Interest(task.getResult().getDocuments().get(0).getData()), Constants.STATUS_OK);
+                            }
+                            else callback.onCallback(null, Constants.STATUS_OK);
+                        }
+                        else callback.onCallback(null, Constants.STATUS_KO);
+                    }
+                });
+    }
+
+    public static void getUserInterests(String username, final UserInterestsCallback callback)
+    {
+        FirebaseFirestore.getInstance().collection("interests")
+                .whereEqualTo("username", username)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null)
+                        {
+                            Log.i("Access", "Failed", e);
+                            callback.onCallback(null, Constants.STATUS_KO);
+                        }
+
+                        List<Interest> interests = new ArrayList<>();
+
+                        for (QueryDocumentSnapshot document : value)
+                        {
+                            interests.add(new Interest(document.getData()));
+                        }
+
+                        callback.onCallback(interests, Constants.STATUS_OK);
                     }
                 });
     }
@@ -51,8 +106,10 @@ public class InterestAccess {
 
                 for (QueryDocumentSnapshot document : value)
                 {
-                    interestsList.add(new Interest(document.getId(), document.getData()));
+                    interestsList.add(new Interest(document.getData()));
                 }
+
+                callback.onCallback(interestsList, Constants.STATUS_OK);
             }
         });
     }
@@ -60,6 +117,16 @@ public class InterestAccess {
     public interface CreateInterestCallback
     {
         void onCallback(int status);
+    }
+
+    public interface InterestCallback
+    {
+        void onCallback(Interest interest, int status);
+    }
+
+    public interface UserInterestsCallback
+    {
+        void onCallback(List<Interest> userInterests, int status);
     }
 
     public interface InterestsCallback

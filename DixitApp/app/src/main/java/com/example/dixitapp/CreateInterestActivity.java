@@ -4,14 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Guideline;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +27,7 @@ public class CreateInterestActivity extends AppCompatActivity {
     FirebaseUser user;
 
     private Globals globals;
+    private Context context;
 
     private Guideline guidelineVerStart;
     private Guideline guidelineVerEnd;
@@ -58,6 +64,8 @@ public class CreateInterestActivity extends AppCompatActivity {
     private String username;
     private String defaultImage = "https://www.voanews.com/themes/custom/voa/images/Author__Placeholder.png";
     private String image;
+    private String category;
+    private String contentText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +78,7 @@ public class CreateInterestActivity extends AppCompatActivity {
         }
         catch (NullPointerException e){}
 
+        context = getApplicationContext();
         globals = (Globals)getApplication();
 
         mAuth = FirebaseAuth.getInstance();
@@ -146,18 +155,67 @@ public class CreateInterestActivity extends AppCompatActivity {
             }
         });
 
+        editTextCategory.setFilters(new InputFilter[] {new InputFilter.LengthFilter(24)});
+        editTextCategory.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /*if (textViewNameBackground.getVisibility() == View.VISIBLE) textViewNameBackground.setVisibility(View.INVISIBLE);
+                else if (textViewNameBackground.getVisibility() == View.INVISIBLE && s.length() == 0) textViewNameBackground.setVisibility(View.VISIBLE);*/
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                category = editTextCategory.getText().toString();
+            }
+        });
+
+        editTextContentText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(240)});
+        editTextContentText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /*if (textViewNameBackground.getVisibility() == View.VISIBLE) textViewNameBackground.setVisibility(View.INVISIBLE);
+                else if (textViewNameBackground.getVisibility() == View.INVISIBLE && s.length() == 0) textViewNameBackground.setVisibility(View.VISIBLE);*/
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                contentText = editTextContentText.getText().toString();
+            }
+        });
+
         textViewCreateInterest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Interest newInterest = new Interest(
-                        user.getUid().toString(),
-                        image,
-                        username,
-                        "",
-                        editTextCategory.getText().toString(),
-                        editTextContentText.getText().toString(),
-                        0
-                        );
+                if (category != null && contentText != null)
+                {
+                    Toast.makeText(context, "Creating interest...", Toast.LENGTH_SHORT).show();
+                    InterestAccess.createNewInterest(image, username, category, contentText, new InterestAccess.CreateInterestCallback() {
+                        @Override
+                        public void onCallback(int status) {
+                            if (status == InterestAccess.Constants.STATUS_OK)
+                            {
+                                Toast.makeText(context, "Interest created", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(CreateInterestActivity.this, UserProfile.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                            }
+                            else if (status == InterestAccess.Constants.STATUS_KO)
+                            {
+                                Toast.makeText(context, "Interest creation failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
             }
         });
     }
