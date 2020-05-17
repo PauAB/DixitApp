@@ -9,6 +9,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,8 +52,12 @@ public class CreateInterestActivity extends AppCompatActivity {
     private ImageView imageViewBack;
     private TextView textViewCreateInterest;
 
+    private EditText editTextCategory;
+    private EditText editTextContentText;
+
     private String username;
     private String defaultImage = "https://www.voanews.com/themes/custom/voa/images/Author__Placeholder.png";
+    private String image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +125,17 @@ public class CreateInterestActivity extends AppCompatActivity {
 
         imageViewBack = findViewById(R.id.imageViewBack);
         textViewCreateInterest = findViewById(R.id.textViewCreateInterest);
+        editTextCategory = findViewById(R.id.editTextCategory);
+        editTextContentText = findViewById(R.id.editTextContentText);
 
         username = user.getEmail().split("@")[0];
+
+        if (user != null)
+        {
+            if (user.getPhotoUrl() != null) image = user.getPhotoUrl().toString();
+            else image = defaultImage;
+        }
+        else image = defaultImage;
 
         imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +149,15 @@ public class CreateInterestActivity extends AppCompatActivity {
         textViewCreateInterest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Interest newInterest = new Interest(user.getUid().toString(), user.getPhotoUrl().toString(), user.);
+                Interest newInterest = new Interest(
+                        user.getUid().toString(),
+                        image,
+                        username,
+                        "",
+                        editTextCategory.getText().toString(),
+                        editTextContentText.getText().toString(),
+                        0
+                        );
             }
         });
     }

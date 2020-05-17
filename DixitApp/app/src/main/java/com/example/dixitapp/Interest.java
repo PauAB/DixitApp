@@ -24,6 +24,9 @@ public class Interest {
         Category = category;
         Content = content;
         Counter = counter;
+
+        SetDateAndTime();
+        Counter = 0;
     }
 
     public Interest(String ID, Map<String, Object> data) {
@@ -34,6 +37,11 @@ public class Interest {
         Category = data.get("category").toString();
         Content = data.get("content").toString();
         Counter = (int)(long)data.get("counter");
+    }
+
+    private void SetDateAndTime()
+    {
+
     }
 
     @Exclude
