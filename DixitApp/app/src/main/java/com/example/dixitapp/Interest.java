@@ -3,6 +3,8 @@ package com.example.dixitapp;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +43,8 @@ public class Interest {
 
     private void SetDateAndTime()
     {
-
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm '|' MM.dd.yyyy");
+        DateAndTime = sdf.format(new Date());
     }
 
     @Exclude
