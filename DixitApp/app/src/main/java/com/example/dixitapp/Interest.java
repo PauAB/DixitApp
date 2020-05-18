@@ -1,5 +1,8 @@
 package com.example.dixitapp;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
@@ -7,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.opencensus.stats.Aggregation;
 
 @IgnoreExtraProperties
 public class Interest {
@@ -36,6 +41,45 @@ public class Interest {
         Category = data.get("category").toString();
         Content = data.get("content").toString();
         Counter = (int)(long)data.get("counter");
+    }
+
+    public void AddCounter()
+    {
+        Counter++;
+
+        InterestAccess.updateCounter(this.ID, "counter", Counter, new InterestAccess.CounterCallback() {
+            @Override
+            public void onCallback(int status) {
+                if (status == InterestAccess.Constants.STATUS_OK)
+                {
+                    Log.i("Access", "Added success");
+                }
+                else if (status == InterestAccess.Constants.STATUS_KO)
+                {
+                    Log.i("Access", "Added failed");
+                }
+            }
+        });
+    }
+
+    public void RemoveCounter()
+    {
+        if (Counter > 0) Counter--;
+        else Counter = 0;
+
+        InterestAccess.updateCounter(this.ID, "counter", Counter, new InterestAccess.CounterCallback() {
+            @Override
+            public void onCallback(int status) {
+                if (status == InterestAccess.Constants.STATUS_OK)
+                {
+                    Log.i("Access", "Remove success");
+                }
+                else if (status == InterestAccess.Constants.STATUS_KO)
+                {
+                    Log.i("Access", "Remove failed");
+                }
+            }
+        });
     }
 
     @Exclude

@@ -114,6 +114,24 @@ public class InterestAccess {
         });
     }
 
+    public static void updateCounter(String id, final String field, final int value, final CounterCallback callback)
+    {
+        FirebaseFirestore.getInstance().collection("interests").document(id).update(field, value)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful())
+                        {
+                            callback.onCallback(Constants.STATUS_OK);
+                        }
+                        else
+                        {
+                            callback.onCallback(Constants.STATUS_KO);
+                        }
+                    }
+                });
+    }
+
     public interface CreateInterestCallback
     {
         void onCallback(int status);
@@ -132,6 +150,11 @@ public class InterestAccess {
     public interface InterestsCallback
     {
         void onCallback(List<Interest> interests, int status);
+    }
+
+    public interface CounterCallback
+    {
+        void onCallback(int status);
     }
 
     public interface Constants

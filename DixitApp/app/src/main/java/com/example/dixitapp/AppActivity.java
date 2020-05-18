@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AppActivity extends AppCompatActivity implements ContentFragment.OnListFragmentInteractionListener {
 
@@ -303,5 +304,15 @@ public class AppActivity extends AppCompatActivity implements ContentFragment.On
     @Override
     public void onListFragmentInteraction(Interest item) {
 
+    }
+
+    @Override
+    public void onPlusChecked(Interest item) {
+        item.AddCounter();
+    }
+
+    @Override
+    public void onPlusUnchecked(Interest item) {
+        item.RemoveCounter();
     }
 }
