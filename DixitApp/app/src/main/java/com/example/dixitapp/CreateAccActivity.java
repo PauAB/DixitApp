@@ -405,7 +405,7 @@ public class CreateAccActivity extends AppCompatActivity {
                                                                             @Override
                                                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                                                 if (task.isSuccessful()) {
-                                                                                    UserAccess.createNewUser(username, name, email, new UserAccess.CreateNewUserCallback() {
+                                                                                    User newUser = UserAccess.createNewUser(username, name, email, new UserAccess.CreateNewUserCallback() {
                                                                                         @Override
                                                                                         public void onCallback(int status) {
                                                                                             if (status == UserAccess.Constants.STATUS_OK) {
@@ -419,6 +419,8 @@ public class CreateAccActivity extends AppCompatActivity {
                                                                                             }
                                                                                         }
                                                                                     });
+
+                                                                                    globals.setUser(newUser);
                                                                                 } else {
                                                                                     Toast.makeText(context, "Error. User creation failed.", Toast.LENGTH_SHORT).show();
                                                                                     Log.w("User", "Authentication failed.", task.getException());
@@ -428,7 +430,7 @@ public class CreateAccActivity extends AppCompatActivity {
                                                             }
                                                             else
                                                             {
-                                                                UserAccess.createNewUser(username, name, email, new UserAccess.CreateNewUserCallback() {
+                                                                User newUser = UserAccess.createNewUser(username, name, email, new UserAccess.CreateNewUserCallback() {
                                                                     @Override
                                                                     public void onCallback(int status) {
                                                                         if (status == UserAccess.Constants.STATUS_OK) {
@@ -442,6 +444,8 @@ public class CreateAccActivity extends AppCompatActivity {
                                                                         }
                                                                     }
                                                                 });
+
+                                                                globals.setUser(newUser);
                                                             }
                                                             break;
                                                         case UserAccess.Constants.STATUS_KO:

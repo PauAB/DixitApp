@@ -1,5 +1,7 @@
 package com.example.dixitapp;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -7,17 +9,26 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 public class UserAccess {
 
-    public static void createNewUser(String username, String email, String name, final CreateNewUserCallback callback)
+    public static User createNewUser(String username, String email, String name, final CreateNewUserCallback callback)
     {
+        final User newUser = new User(email, name);
+
         FirebaseFirestore.getInstance().collection("users").document(username)
-                .set(new User(email, name).toMap())
+                .set(newUser.toMap())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -28,8 +39,11 @@ public class UserAccess {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         callback.onCallback(Constants.STATUS_KO);
+                        return;
                     }
                 });
+
+        return newUser;
     }
 
     public static void checkUserExist(String name, final ExistCallback callback)
@@ -142,6 +156,45 @@ public class UserAccess {
                 });
     }
 
+    public static void updateInterests(String username, final String field, final List<Interest> value, final InterestCallback callback)
+    {
+        FirebaseFirestore.getInstance().collection("users")
+                .document(username)
+                .update(field, value)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) callback.onCallback(Constants.STATUS_OK);
+                        else callback.onCallback(Constants.STATUS_KO);
+                    }
+                });
+    }
+
+    public static void getAllInterests(String email, final InterestsCallback callback)
+    {
+        FirebaseFirestore.getInstance().collection("users")
+                .whereEqualTo("email", email)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null)
+                        {
+                            Log.i("Access", "Failed", e);
+                            callback.onCallback(null, Constants.STATUS_KO);
+                        }
+
+                        List<Interest> interests = new ArrayList<>();
+
+                        for (QueryDocumentSnapshot document : value)
+                        {
+                            interests.add(new Interest(document.getData()));
+                        }
+
+                        callback.onCallback(interests, Constants.STATUS_OK);
+                    }
+                });
+    }
+
     public interface CreateNewUserCallback
     {
         void onCallback(int status);
@@ -165,6 +218,16 @@ public class UserAccess {
     public interface ChangeFieldCallback
     {
         void onCallback(int status);
+    }
+
+    public interface InterestCallback
+    {
+        void onCallback(int status);
+    }
+
+    public interface InterestsCallback
+    {
+        void onCallback(List<Interest> interests, int status);
     }
 
     public interface Constants

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.EditText;
@@ -220,6 +221,8 @@ public class SignInActivity extends AppCompatActivity {
 
                                         if (mAuth.getCurrentUser().isEmailVerified())
                                         {
+                                            Log.i("SignIn", "Email: " + mAuth.getCurrentUser().getEmail());
+
                                             Intent intent = new Intent(SignInActivity.this, AppActivity.class);
                                             startActivity(intent);
                                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

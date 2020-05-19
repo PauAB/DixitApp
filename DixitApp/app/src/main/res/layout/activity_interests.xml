@@ -120,4 +120,14 @@
         app:layout_constraintStart_toStartOf="@+id/textViewYouHaveNo"
         app:layout_constraintTop_toBottomOf="@+id/textViewYouHaveNo" />
 
+    <fragment
+        android:id="@+id/fragment2"
+        class="com.example.dixitapp.InterestsFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineVerEnd"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHorEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineHorStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHeaderEnd" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,9 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-public class InterestsActivity extends AppCompatActivity {
+public class InterestsActivity extends AppCompatActivity implements InterestsFragment.OnListFragmentInteractionListener{
 
     private Guideline guidelineVerStart;
     private Guideline guidelineVerEnd;
@@ -27,6 +28,9 @@ public class InterestsActivity extends AppCompatActivity {
     // -------------------------------------------
 
     private ImageView imageViewBack;
+
+    private static TextView textViewYouHaveNo;
+    private static TextView textViewInterestsYet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,9 @@ public class InterestsActivity extends AppCompatActivity {
 
         imageViewBack = findViewById(R.id.imageViewBack);
 
+        textViewYouHaveNo = findViewById(R.id.textViewYouHaveNo);
+        textViewInterestsYet = findViewById(R.id.textViewInterestsYet);
+
         imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,5 +74,22 @@ public class InterestsActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
+    }
+
+    public static void HideNoInterests()
+    {
+        textViewYouHaveNo.setAlpha(0f);
+        textViewInterestsYet.setAlpha(0f);
+    }
+
+    public static void ShowNoInterests()
+    {
+        textViewYouHaveNo.setAlpha(1f);
+        textViewInterestsYet.setAlpha(1f);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Interest item) {
+
     }
 }
